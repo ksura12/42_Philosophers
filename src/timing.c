@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   timing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/07/30 13:25:24 by ksura            ###   ########.fr       */
+/*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
+/*   Updated: 2022/07/30 13:18:54 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-	#define PHILOSOPHERS_H
+#include "../include/philosophers.h"
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <stdlib.h>
-
-typedef struct s_philos
+time_t	get_time_ms(void)
 {
+	struct timeval	tv;
+	
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	print_time(t_philos	*philos)
+{
+	time_t	time;
 	time_t	time_start;
-} t_philos;
 
-time_t		get_time_ms(void);
-void		print_time(t_philos	*philos);
-t_philos	*init(void);
+	time_start = philos->time_start;
 
-
-
-
-
-#endif
+	time = get_time_ms();
+	printf("%ld", time_start - time);
+	return ;
+}
