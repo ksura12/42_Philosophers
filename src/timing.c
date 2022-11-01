@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/07/30 13:18:54 by ksura            ###   ########.fr       */
+/*   Updated: 2022/10/31 18:47:32 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	print_time(t_philos	*philos)
 	time_start = philos->time_start;
 
 	time = get_time_ms();
-	printf("%ld", time_start - time);
+	printf("%ld", time - time_start);
 	return ;
 }
