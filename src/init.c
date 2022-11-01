@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 13:50:37 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 14:27:21 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_philostr *init(char **argv)
 {
 	t_philostr		*philostr;
 	int				c;
+	int				c_next;
 	philostr = malloc(sizeof(t_philostr));
 	if(!philostr)
 		exit(1);
@@ -59,8 +60,23 @@ t_philostr *init(char **argv)
 	c = philostr->philo_num;
 	while (c >= 0)
 	{
+		pthread_mutex_init(&philostr->fork_mutex[c], NULL);
+		c--;
+	}
+	c = philostr->philo_num;
+	while (c >= 0)
+	{
+		if (c == 0)
+			c_next = philostr->philo_num;
+		else
+			c_next = philostr->philo_num - 1;
 		philostr->one_phil[c].time_start = philostr->time_start;
-		// pthread_mutex_init(&philostr->fork_mutex[c], NULL);
+		philostr->one_phil[c].time_to_die = philostr->time_to_die;
+		philostr->one_phil[c].time_to_eat = philostr->time_to_eat;
+		philostr->one_phil[c].time_to_sleep = philostr->time_to_sleep;
+		philostr->one_phil[c].print_mutex = philostr->print_mutex;
+		philostr->one_phil[c].fork_mutex[0] = philostr->fork_mutex[c];
+		philostr->one_phil[c].fork_mutex[1] = philostr->fork_mutex[c_next];
 		c--;
 	}
 	return (philostr);

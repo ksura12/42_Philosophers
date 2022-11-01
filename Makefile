@@ -6,12 +6,12 @@
 #    By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 09:24:12 by ksura             #+#    #+#              #
-#    Updated: 2022/11/01 12:52:44 by ksura            ###   ########.fr        #
+#    Updated: 2022/11/01 14:35:44 by ksura            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philosophers
-CC = gcc 
+CC = gcc -fsanitize=thread -g
 CFLAGS := -Wall -Werror -Wextra
 HEADER = ./header
 SRCDIR = src/
