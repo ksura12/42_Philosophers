@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/08/02 10:30:58 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 11:53:10 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,28 @@ int	ft_atoi(const char *str)
 	return (n * m);
 }
 
-t_philos *init(char **argv)
+t_philostr *init(char **argv)
 {
-	t_philos		*philos;
-	
-	philos = malloc(sizeof(t_philos));
-	if(!philos)
+	t_philostr		*philostr;
+	int				c;
+	philostr = malloc(sizeof(t_philostr));
+	if(!philostr)
 		exit(1);
-	philos->time_start = get_time_ms();
-	philos->philo = ft_atoi(argv[1]);
-	philos->time_to_die = ft_atoi(argv[2]);
-	philos->time_to_eat = ft_atoi(argv[3]);
-	philos->time_to_sleep = ft_atoi(argv[4]);
+	philostr->time_start = get_time_ms();
+	philostr->philo_num = ft_atoi(argv[1]);
+	philostr->time_to_die = ft_atoi(argv[2]);
+	philostr->time_to_eat = ft_atoi(argv[3]);
+	philostr->time_to_sleep = ft_atoi(argv[4]);
 	if (argv[5])
-		philos->c_eat = ft_atoi(argv[5]);
+		philostr->c_eat = ft_atoi(argv[5]);
 	else
-		philos->c_eat = -1;
-	// pthread_mutex_init(philos->mutex_wright, NULL);
-	return (philos);
+		philostr->c_eat = -1;
+	pthread_mutex_init(&philostr->print_mutex, NULL);
+	c = philostr->philo_num;
+	while (c >=0)
+	{
+		pthread_mutex_init(&philostr->fork_mutex[c], NULL);
+		c--;
+	}
+	return (philostr);
 }
