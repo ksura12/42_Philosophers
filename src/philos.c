@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 12:11:34 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 12:36:51 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void *living(void *data)
 	philostr = (t_philostr *)data;
 	id_num = philostr->counter;
 	
-	pthread_mutex_lock(&philostr->print_mutex);
+	// pthread_mutex_lock(&philostr->print_mutex);
 	printf("Thread %lu is living\n", (unsigned long)philostr->tid[id_num]);
 	print_time(philostr);
 	printf("Philosopher %i is alive\n", id_num);
-	pthread_mutex_unlock(&philostr->print_mutex);
+	// pthread_mutex_unlock(&philostr->print_mutex);
 	
 	// taking_fork(philostr);
 	return (NULL);
@@ -48,9 +48,9 @@ void	philos(t_philostr *philostr)
 		if (!pthread_create(&philostr->tid[philostr->counter], NULL, &living, philostr))
 		{
 			// print_time(philostr);
-			pthread_mutex_lock(&philostr->print_mutex);
+			// pthread_mutex_lock(&philostr->print_mutex);
 			printf("created thread n: %lu\n", (unsigned long)philostr->tid[philostr->counter]);
-			pthread_mutex_unlock(&philostr->print_mutex);
+			// pthread_mutex_unlock(&philostr->print_mutex);
 		}
 		// pthread_create(&tid[c], NULL, living, NULL);
 		// print_time(philos);
