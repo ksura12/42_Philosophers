@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 09:28:15 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 10:04:48 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,29 @@
 
 void *living(void *data)
 {
-	(void)data;
+	// (void)data;
+	t_philos	*philostr;
+
+	philostr = (t_philos *)data;
 	// pthread_mutex_lock()
-	// printf("Thread %i is living\n", c);
-	printf("Thread -x- is living\n");
+	printf("Thread %lu is living\n", (unsigned long)philostr->tid[philostr->counter]);
+	// printf("Thread -x- is living\n");
 	return (NULL);
 }
 
-void	philos(t_philos *philos)
+void	philos(t_philos *philostr)
 {
-	int c;
-	pthread_t	tid[600];
+	// int c;
+	// pthread_t	tid[600];
 	
-	c = 0;
-	while (philos->philo > c)
+	philostr->counter = 0;
+	while (philostr->philo > philostr->counter)
 	{
 		// tid[c] = malloc(sizeof(pthread_t));
-		if (!pthread_create(&tid[c], NULL, &living, NULL))
+		if (!pthread_create(&philostr->tid[philostr->counter], NULL, &living, philostr))
 		{
-			print_time(philos);
-			printf("created thread n: %lu\n", (unsigned long)tid[c]);
+			print_time(philostr);
+			printf("created thread n: %lu\n", (unsigned long)philostr->tid[philostr->counter]);
 		}
 		// pthread_create(&tid[c], NULL, living, NULL);
 		// print_time(philos);
@@ -47,16 +50,16 @@ void	philos(t_philos *philos)
 		// 	thinking
 		// taking_fork();
 		// printf("c:%i\n", c);
-		c++;
+		philostr->counter++;
 	}
-	c--;
-	while (c >= 0)
+	philostr->counter--;
+	while (philostr->counter >= 0)
 	{
-		print_time(philos);
+		print_time(philostr);
 		printf("before joining\n");
-		pthread_join(tid[c], NULL);
-		printf("Joining thread n: %lu with main\n", (unsigned long)tid[c]);
+		pthread_join(philostr->tid[philostr->counter], NULL);
+		printf("Joining thread n: %lu with main\n", (unsigned long)philostr->tid[philostr->counter]);
 		// free (tid[c]);
-		c--;
+		philostr->counter--;
 	}
 }
