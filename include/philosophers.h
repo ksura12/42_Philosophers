@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 16:59:20 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 17:27:31 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_onephil
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				c_eat;
-	int				stop;
+	int				*stop;
 	int				*dead;
 	pthread_mutex_t	fork_mutex[2];
 	pthread_mutex_t	dead_mutex;
@@ -48,6 +48,8 @@ typedef struct s_philostr
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	fork_mutex[600];
 	t_onephil		one_phil[600];
+	int				*stop;
+	int				*dead;
 } t_philostr;
 
 time_t		get_time_ms(void);
