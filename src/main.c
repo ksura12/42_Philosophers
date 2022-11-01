@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 11:52:19 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:05:09 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ int	main(int argc, char **argv, char **envp)
 	philostr = init(argv);
 	// usleep(100 * 1000);
 	// pthread_mutex_init(&philostr->print_mutex, NULL);
+	printf("start time: ");
 	print_time(philostr);
+	printf("\n");
 	// printf("\n");
 
 	// print_time(philos_struc);

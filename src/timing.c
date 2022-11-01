@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 12:10:33 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:45:28 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ void	print_time(t_philostr	*philostr)
 	time_t	time_start;
 
 	time_start = philostr->time_start;
+
+	time = get_time_ms();
+	printf("%ld ", time - time_start);
+	return ;
+}
+void	print_time_thread(t_onephil	*one_phil)
+{
+	time_t	time;
+	time_t	time_start;
+
+	time_start = one_phil->time_start;
 
 	time = get_time_ms();
 	printf("%ld ", time - time_start);

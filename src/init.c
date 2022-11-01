@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 12:36:36 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:50:37 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ t_philostr *init(char **argv)
 		philostr->c_eat = ft_atoi(argv[5]);
 	else
 		philostr->c_eat = -1;
-	// pthread_mutex_init(&philostr->print_mutex, NULL);
+	pthread_mutex_init(&philostr->print_mutex, NULL);
 	c = philostr->philo_num;
-	// while (c >=0)
-	// {
-	// 	pthread_mutex_init(&philostr->fork_mutex[c], NULL);
-	// 	c--;
-	// }
+	while (c >= 0)
+	{
+		philostr->one_phil[c].time_start = philostr->time_start;
+		// pthread_mutex_init(&philostr->fork_mutex[c], NULL);
+		c--;
+	}
 	return (philostr);
 }
