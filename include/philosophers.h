@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 10:34:53 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 16:12:26 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_onephil
 	int				*stop;
 	int				*dead;
 	pthread_mutex_t	*print_mutex;
-	t_fork			*fork[2];
+	t_fork			fork[2];
 	pthread_mutex_t	*dead_mutex;
 	pthread_mutex_t	*stop_mutex;
 } t_onephil;
@@ -55,7 +55,7 @@ typedef struct s_philostr
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	stop_mutex;
-	t_fork			*fork[600];
+	t_fork			fork[600];
 	t_onephil		one_phil[600];
 	int				stop;
 	int				dead;
