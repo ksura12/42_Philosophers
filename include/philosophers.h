@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 09:16:51 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 09:25:39 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct s_philostr
 	pthread_mutex_t	stop_mutex;
 	pthread_mutex_t	fork_mutex[600];
 	t_onephil		one_phil[600];
-	int				*stop;
-	int				*dead;
+	int				stop;
+	int				dead;
 } t_philostr;
 
 time_t		get_time_ms(void);
