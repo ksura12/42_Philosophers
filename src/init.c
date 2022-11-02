@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 17:35:48 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 09:17:01 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,15 @@ t_philostr *init(char **argv)
 		philostr->c_eat = -1;
 	pthread_mutex_init(&philostr->print_mutex, NULL);
 	pthread_mutex_init(&philostr->dead_mutex, NULL);
-	
-	philostr->stop = &stop;
+	pthread_mutex_init(&philostr->stop_mutex, NULL);
+	pthread_mutex_lock(&philostr->stop_mutex);
 	stop = 0;
-	philostr->dead = &dead;
+	philostr->stop = &stop;
+	pthread_mutex_unlock(&philostr->stop_mutex);
+	pthread_mutex_lock(&philostr->dead_mutex);
 	dead = 0;
+	philostr->dead = &dead;
+	pthread_mutex_unlock(&philostr->dead_mutex);
 	c = philostr->philo_num;
 	while (c >= 0)
 	{
@@ -84,10 +88,11 @@ t_philostr *init(char **argv)
 		philostr->one_phil[c].time_to_die = philostr->time_to_die;
 		philostr->one_phil[c].time_to_eat = philostr->time_to_eat;
 		philostr->one_phil[c].time_to_sleep = philostr->time_to_sleep;
-		philostr->one_phil[c].print_mutex = philostr->print_mutex;
-		philostr->one_phil[c].dead_mutex = philostr->dead_mutex;
-		philostr->one_phil[c].fork_mutex[0] = philostr->fork_mutex[c];
-		philostr->one_phil[c].fork_mutex[1] = philostr->fork_mutex[c_next];
+		philostr->one_phil[c].print_mutex = &philostr->print_mutex;
+		philostr->one_phil[c].dead_mutex = &philostr->dead_mutex;
+		philostr->one_phil[c].stop_mutex = &philostr->stop_mutex;
+		philostr->one_phil[c].fork_mutex[0] = &philostr->fork_mutex[c];
+		philostr->one_phil[c].fork_mutex[1] = &philostr->fork_mutex[c_next];
 		philostr->one_phil[c].stop = philostr->stop;
 		philostr->one_phil[c].dead = philostr->dead;
 		c--;

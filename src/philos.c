@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 17:36:39 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 09:21:53 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,19 @@ void *living(void *data)
 
 	one_phil = (t_onephil *)data;
 
-	pthread_mutex_lock(&one_phil->print_mutex);
+	pthread_mutex_lock(one_phil->print_mutex);
 	// printf("Thread %lu is living\n", (unsigned long)one_phil->tid);
 	print_time_thread(one_phil);
 	printf("Philosopher %i is alive\n", one_phil->id_num);
-	pthread_mutex_unlock(&one_phil->print_mutex);
+	pthread_mutex_unlock(one_phil->print_mutex);
 	printf("value of the dead: %i\n", *one_phil->dead);
+	while(1)
+	{
+		pthread_mutex_lock(one_phil->stop_mutex);
+		if (*one_phil->stop == 1)
+			break;
+		pthread_mutex_unlock(one_phil->stop_mutex);
+	}
 	// taking_fork(philostr);
 	return (NULL);
 }
@@ -41,23 +48,26 @@ void *supervising(void *data)
 
 	one_phil = (t_onephil *)data;
 
-	pthread_mutex_lock(&one_phil->print_mutex);
+	pthread_mutex_lock(one_phil->print_mutex);
 	// printf("Thread %lu is living\n", (unsigned long)one_phil->tid);
 	print_time_thread(one_phil);
 	printf("Supervisoris alive\n");
-	pthread_mutex_unlock(&one_phil->print_mutex);
-	pthread_mutex_lock(&one_phil->dead_mutex);
-	while (1)
-	{
-		if (*one_phil->dead == 1)
-		{
-			*one_phil->stop = 1;
-			break;
-		}
-	}
+	pthread_mutex_unlock(one_phil->print_mutex);
+	// usleep(100 *1000);
+	pthread_mutex_lock(one_phil->stop_mutex);
+	*one_phil->stop = 1;
+	pthread_mutex_unlock(one_phil->stop_mutex);
 
-	pthread_mutex_unlock(&one_phil->dead_mutex);
+	// while (1)
+	// {
+	// 	if (*one_phil->dead == 1)
+	// 	{
+	// 		*one_phil->stop = 1;
+	// 		break;
+	// 	}
+	// }
 
+	
 	// taking_fork(philostr);
 	return (NULL);
 }
