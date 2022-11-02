@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 16:14:47 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 18:03:37 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,42 @@ void *living(void *data)
 	pthread_mutex_unlock(one_phil->print_mutex);
 	while(1)
 	{
+		printf("%i one\n", one_phil->id_num);
 		pthread_mutex_lock(one_phil->stop_mutex);
-			if (*one_phil->stop == 1)
-				return(one_phil);
+		printf("%i onepointone\n", one_phil->id_num);
+		if (*one_phil->stop == 1)
+		{
+			pthread_mutex_unlock(one_phil->stop_mutex);
+			return(NULL);
+		}
 		pthread_mutex_unlock(one_phil->stop_mutex);
+		printf("%i onepointone\n", one_phil->id_num);
 		while (1)
 		{
+			printf("%i two\n", one_phil->id_num);
 			pthread_mutex_lock(&one_phil->fork[0].fork_mutex);
 			if (one_phil->fork[0].in_use == 0)
 			{
+				printf("%i three\n", one_phil->id_num);
 				one_phil->fork[0].in_use = 1;
 				pthread_mutex_unlock(&one_phil->fork[0].fork_mutex);
+				printf("%i tthree.1\n", one_phil->id_num);
 				pthread_mutex_lock(&one_phil->fork[1].fork_mutex);
+				printf("%i tthree.2\n", one_phil->id_num);
 				if (one_phil->fork[1].in_use == 0)
 				{
 					pthread_mutex_lock(&one_phil->fork[0].fork_mutex);
+					printf("%i tthree.3\n", one_phil->id_num);
 					pthread_mutex_lock(one_phil->print_mutex);
+					printf("%i tthree.4\n", one_phil->id_num);
 					pthread_mutex_lock(one_phil->stop_mutex);
+					printf("%i tthree.5\n", one_phil->id_num);
 					if (*one_phil->stop == 1)
-						return(one_phil);
-					pthread_mutex_unlock(one_phil->stop_mutex);
+					{
+						printf("%i tthree.6\n", one_phil->id_num);
+						pthread_mutex_unlock(one_phil->stop_mutex);
+						return(NULL);
+					}
 					print_time_thread(one_phil);
 					printf("%i has taken a fork\n", one_phil->id_num);
 					print_time_thread(one_phil);
@@ -64,16 +80,19 @@ void *living(void *data)
 				}
 				else
 				{
+					printf("%i is in\n", one_phil->id_num);
 					pthread_mutex_unlock(&one_phil->fork[1].fork_mutex);
 					usleep(1 * 1000);
 				}
 			}
 			else
 			{
+				printf("%i is out\n", one_phil->id_num);
 				pthread_mutex_unlock(&one_phil->fork[0].fork_mutex);
 				usleep(1 * 1000);
 			}
 		}
+		// break;
 	}
 	return (NULL);
 }
@@ -90,7 +109,7 @@ void *supervising(void *data)
 	print_time_thread(one_phil);
 	printf("Supervisoris alive\n");
 	pthread_mutex_unlock(one_phil->print_mutex);
-	// usleep(100 *1000);
+	usleep(100 *1000);
 	pthread_mutex_lock(one_phil->stop_mutex);
 	*one_phil->stop = 1;
 	pthread_mutex_unlock(one_phil->stop_mutex);
