@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 09:21:53 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:03:12 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,52 @@ void *living(void *data)
 	print_time_thread(one_phil);
 	printf("Philosopher %i is alive\n", one_phil->id_num);
 	pthread_mutex_unlock(one_phil->print_mutex);
-	printf("value of the dead: %i\n", *one_phil->dead);
 	while(1)
 	{
 		pthread_mutex_lock(one_phil->stop_mutex);
-		if (*one_phil->stop == 1)
-			break;
+			if (*one_phil->stop == 1)
+				return(one_phil);
 		pthread_mutex_unlock(one_phil->stop_mutex);
+		while (1)
+		{
+			pthread_mutex_lock(&one_phil->fork[0]->fork_mutex);
+			if (one_phil->fork[0]->in_use == 0)
+			{
+				one_phil->fork[0]->in_use = 1;
+				pthread_mutex_unlock(&one_phil->fork[0]->fork_mutex);
+				pthread_mutex_lock(&one_phil->fork[1]->fork_mutex);
+				if (one_phil->fork[1]->in_use == 0)
+				{
+					pthread_mutex_lock(&one_phil->fork[0]->fork_mutex);
+					pthread_mutex_lock(one_phil->print_mutex);
+					pthread_mutex_lock(one_phil->stop_mutex);
+					if (*one_phil->stop == 1)
+						return(one_phil);
+					pthread_mutex_unlock(one_phil->stop_mutex);
+					print_time_thread(one_phil);
+					printf("%i has taken a fork\n", one_phil->id_num);
+					print_time_thread(one_phil);
+					printf("%i is eating\n", one_phil->id_num);
+					pthread_mutex_unlock(one_phil->print_mutex);
+					usleep(one_phil->time_to_eat * 1000);
+					one_phil->fork[0]->in_use = 0;
+					pthread_mutex_unlock(&one_phil->fork[0]->fork_mutex);
+					pthread_mutex_unlock(&one_phil->fork[1]->fork_mutex);
+					break;
+				}
+				else
+				{
+					pthread_mutex_unlock(&one_phil->fork[1]->fork_mutex);
+					usleep(1 * 1000);
+				}
+			}
+			else
+			{
+				pthread_mutex_unlock(&one_phil->fork[0]->fork_mutex);
+				usleep(1 * 1000);
+			}
+		}
 	}
-	// taking_fork(philostr);
 	return (NULL);
 }
 

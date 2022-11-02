@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 09:25:39 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 10:34:53 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 #include <sys/time.h>
 #include <stdlib.h>
 #include <pthread.h>
+
+typedef struct s_fork
+{
+	pthread_mutex_t	fork_mutex;
+	int		in_use;
+}	t_fork;
 
 typedef struct s_onephil
 {
@@ -32,7 +38,7 @@ typedef struct s_onephil
 	int				*stop;
 	int				*dead;
 	pthread_mutex_t	*print_mutex;
-	pthread_mutex_t	*fork_mutex[2];
+	t_fork			*fork[2];
 	pthread_mutex_t	*dead_mutex;
 	pthread_mutex_t	*stop_mutex;
 } t_onephil;
@@ -49,7 +55,7 @@ typedef struct s_philostr
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	stop_mutex;
-	pthread_mutex_t	fork_mutex[600];
+	t_fork			*fork[600];
 	t_onephil		one_phil[600];
 	int				stop;
 	int				dead;

@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 09:26:53 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:09:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ t_philostr *init(char **argv)
 	c = philostr->philo_num;
 	while (c >= 0)
 	{
-		pthread_mutex_init(&philostr->fork_mutex[c], NULL);
+		pthread_mutex_init(&philostr->fork[c]->fork_mutex, NULL);
+		philostr->fork[c]->in_use = 0;
 		c--;
 	}
 	c = philostr->philo_num;
@@ -88,8 +89,8 @@ t_philostr *init(char **argv)
 		philostr->one_phil[c].print_mutex = &philostr->print_mutex;
 		philostr->one_phil[c].dead_mutex = &philostr->dead_mutex;
 		philostr->one_phil[c].stop_mutex = &philostr->stop_mutex;
-		philostr->one_phil[c].fork_mutex[0] = &philostr->fork_mutex[c];
-		philostr->one_phil[c].fork_mutex[1] = &philostr->fork_mutex[c_next];
+		philostr->one_phil[c].fork[0]->fork_mutex = philostr->fork[c]->fork_mutex;
+		philostr->one_phil[c].fork[1]->fork_mutex = philostr->fork[c_next]->fork_mutex;
 		philostr->one_phil[c].stop = &philostr->stop;
 		philostr->one_phil[c].dead = &philostr->dead;
 		c--;
