@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 08:25:11 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 12:24:38 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,48 +25,48 @@ typedef struct s_fork
 	int		in_use;
 }	t_fork;
 
-typedef struct s_onephil
-{
-	int				id_num;
-	
-	pthread_t		tid;
-	time_t			time_start;
-	time_t			last_meal_eaten;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				c_eat;
-	int				*stop;
-	int				*dead;
-	pthread_mutex_t	*print_mutex;
-	t_fork			fork[2];
-	pthread_mutex_t	*dead_mutex;
-	pthread_mutex_t	*stop_mutex;
-} t_onephil;
+
 
 typedef struct s_philostr
 {
-	time_t			time_start;
 	int				philo_num;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				c_eat;
-	// int				counter;
+	int				stop;
+	int				dead;
+	time_t			time_start;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	stop_mutex;
-	t_fork			fork[600];
-	t_onephil		one_phil[600];
-	int				stop;
-	int				dead;
 } t_philostr;
 
+typedef struct s_onephil
+{
+	int				id_num;
+	time_t			last_meal_eaten;
+	t_fork			*fork[2];
+	pthread_t		tid;
+	t_philostr		*philostr;
+} t_onephil;
+
+//timing.c
 time_t		get_time_ms(void);
 void		print_time(t_philostr	*philos);
-void	print_time_thread(t_onephil	*one_phil);
-t_philostr	*init(char **argv);
-void	philos(t_philostr *philos);
+void		print_time_thread(t_onephil	*one_phil);
+
+//init.c
+t_onephil	**init(char **argv);
+
+//philos.c
+void		philos(t_onephil **phili);
+int			lifetime_counter(t_onephil	*one_phil);
+
+//main.c
+int			is_digit(char **argv);
+int			checker(int argc, char **argv);
+int			main(int argc, char **argv, char **envp);
 
 
 

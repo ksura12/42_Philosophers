@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/01 13:05:09 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 12:23:48 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,22 +53,19 @@ int	checker(int argc, char **argv)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_philostr	*philostr;
+	t_onephil	**one_phil;
 	(void)envp;
 	if (!checker(argc, argv))
 		return (0);
-	// usleep(100 * 1000);
-	philostr = init(argv);
-	// usleep(100 * 1000);
-	// pthread_mutex_init(&philostr->print_mutex, NULL);
+	one_phil = init(argv);
 	printf("start time: ");
-	print_time(philostr);
+	print_time(one_phil[0]->philostr);
 	printf("\n");
 	// printf("\n");
 
 	// print_time(philos_struc);
-	philos(philostr);
-	free (philostr);
+	philos(one_phil);
+	free (one_phil);
 	
 	return (0);
 }
