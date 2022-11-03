@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 12:32:47 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 13:55:58 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ t_onephil **init(char **argv)
 	t_philostr		*philostr;
 	int				c;
 	int				c_next;
-	t_onephil		*one_phil[600];
+	t_onephil		**one_phil;
 
-	one_phil = malloc(sizeof(t_onephil *) * 600);
+	one_phil = malloc(sizeof(t_onephil *) * 601);
 	philostr = malloc(sizeof(t_philostr));
 	if(!philostr)
 		exit(1);
@@ -71,7 +71,6 @@ t_onephil **init(char **argv)
 	c = philostr->philo_num;
 	while (c >= 0)
 	{
-		one_phil[c] = malloc(sizeof(t_onephil *));
 		one_phil[c]->fork[0] = malloc(sizeof(t_fork));
 		pthread_mutex_init(&one_phil[c]->fork[0]->fork_mutex, NULL);
 		one_phil[c]->fork[c]->in_use = 0;

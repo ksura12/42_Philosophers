@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 12:24:23 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 14:17:56 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void *supervising(void *data)
 		i = 0;
 		while (i < supervi->philostr->philo_num)
 		{
-			if (lifetime_counter(supervi[i + 1]) == 1)
+			if (lifetime_counter(&supervi[i + 1]) == 1)
 			{
 				return (NULL);
 			}
@@ -127,23 +127,23 @@ void	philos(t_onephil **phili)
 	// pthread_t	tid[600];
 
 	// philostr->counter = 0;
-	c = 0;
-	pthread_create(&philostr->one_phil[c].tid, NULL, &supervising, &philostr);
-	c++;
-	while (philostr->philo_num > c - 1)
+	c = phili[0]->philostr->philo_num + 1;
+	pthread_create(&phili[c]->tid, NULL, &supervising, &phili[c]);
+	c = phili[0]->philostr->philo_num;
+	while (phili[0]->philostr->philo_num > c - 1)
 	{
-		philostr->one_phil[c].id_num = c;
-		pthread_create(&philostr->one_phil[c].tid, NULL, &living, &philostr->one_phil[c]);
+		phili[c]->id_num = c;
+		pthread_create(&phili[c]->tid, NULL, &living, &phili[c]);
 		c++;
 	}
 	c--;
 	while (c >= 0)
 	{
 		// print_time(philostr);
-		pthread_join(philostr->one_phil[c].tid, NULL);
-		pthread_mutex_lock(&philostr->print_mutex);
-		printf("Joining thread n: %lu with main\n", (unsigned long)philostr->one_phil[c].tid);
-		pthread_mutex_unlock(&philostr->print_mutex);
+		pthread_join(phili[c]->tid, NULL);
+		pthread_mutex_lock(&phili[0]->philostr->print_mutex);
+		printf("Joining thread n: %lu with main\n", (unsigned long)phili[c]->tid);
+		pthread_mutex_unlock(&phili[0]->philostr->print_mutex);
 		// free (tid[c]);
 		c--;
 	}
@@ -154,15 +154,15 @@ int	lifetime_counter(t_onephil	*one_phil)
 	time_t	time;
 	
 	time = get_time_ms();
-	if (time - one_phil->last_meal_eaten >= one_phil->time_to_die)
+	if (time - one_phil->last_meal_eaten >= one_phil->philostr->time_to_die)
 	{
-		pthread_mutex_lock(one_phil->stop_mutex);
-		*one_phil->stop = 1;
-		pthread_mutex_unlock(one_phil->stop_mutex);
-		pthread_mutex_lock(one_phil->print_mutex);
+		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
+		one_phil->philostr->stop = 1;
+		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
+		pthread_mutex_lock(&one_phil->philostr->print_mutex);
 		print_time_thread(one_phil);
 		printf("%i died\n", one_phil->id_num);
-		pthread_mutex_unlock(one_phil->print_mutex);
+		pthread_mutex_unlock(&one_phil->philostr->print_mutex);
 		return (1);
 	}
 	return (0);

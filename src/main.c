@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 12:23:48 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 14:01:27 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ int	main(int argc, char **argv, char **envp)
 
 	// print_time(philos_struc);
 	philos(one_phil);
+	//Free forks
+	//while()
+	//	free(one_phil[0]->fork)
+	
+	//FREeing the only allocated philostr
+	free (one_phil[0]->philostr);
 	free (one_phil);
 	
 	return (0);
