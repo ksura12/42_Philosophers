@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 12:24:38 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 15:35:27 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ typedef struct s_onephil
 {
 	int				id_num;
 	time_t			last_meal_eaten;
-	t_fork			*fork[2];
+	t_fork			*fork_left;
+	t_fork			*fork_right;
 	pthread_t		tid;
 	t_philostr		*philostr;
+	//t_onephil		*next;
 } t_onephil;
 
 //timing.c

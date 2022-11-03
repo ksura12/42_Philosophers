@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 13:55:58 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 16:26:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,35 @@ int	ft_atoi(const char *str)
 	return (n * m);
 }
 
+t_onephil	*ft_table(t_philostr	*philostr)
+{
+	t_onephil	*new_table;
+	char		*tmp;
+
+	new_table = malloc(sizeof (t_onephil *));
+	if (!new_table)
+		return (NULL);
+	new_table->fork_right = malloc(sizeof(t_fork));
+	pthread_mutex_init(&new_table->fork_right->fork_mutex);
+	new_table->philostr = philostr;
+	return (new_table);
+}
+
 t_onephil **init(char **argv)
 {
-	t_philostr		*philostr;
-	int				c;
-	int				c_next;
-	t_onephil		**one_phil;
+	t_philostr	*philostr;
+	int			c;
+	int			c_next;
+	t_onephil	*one_phil;
+	t_onephil	*supervis;
+	// t_fork		**fork;
 
-	one_phil = malloc(sizeof(t_onephil *) * 601);
+	// one_phil = malloc(sizeof(t_onephil *) * 601);
+	if (one_phil == NULL)
+		return (NULL);
 	philostr = malloc(sizeof(t_philostr));
-	if(!philostr)
-		exit(1);
+	if (philostr == NULL)
+		return (NULL);
 	philostr->time_start = get_time_ms();
 	philostr->philo_num = ft_atoi(argv[1]);
 	philostr->time_to_die = ft_atoi(argv[2]);
@@ -70,10 +88,10 @@ t_onephil **init(char **argv)
 	pthread_mutex_unlock(&philostr->dead_mutex);
 	c = philostr->philo_num;
 	while (c >= 0)
-	{
-		one_phil[c]->fork[0] = malloc(sizeof(t_fork));
-		pthread_mutex_init(&one_phil[c]->fork[0]->fork_mutex, NULL);
-		one_phil[c]->fork[c]->in_use = 0;
+	{	
+		one_phil[c]->fork_right = malloc(sizeof(t_fork *));
+		pthread_mutex_init(&one_phil[c]->fork_right->fork_mutex, NULL);
+		one_phil[c]->fork_right->in_use = 0;
 		c--;
 	}
 	c = philostr->philo_num;
@@ -84,7 +102,7 @@ t_onephil **init(char **argv)
 			c_next = philostr->philo_num;
 		else
 			c_next = philostr->philo_num - 1;
-		one_phil[c]->fork[1]->fork_mutex = one_phil[c_next]->fork[0]->fork_mutex;
+		one_phil[c]->fork_left= one_phil[c_next]->fork_right;
 		one_phil[c]->philostr = philostr;
 		c--;
 	}

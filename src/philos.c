@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 14:17:56 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 14:45:03 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ void *living(void *data)
 		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
 		while (1)
 		{
-			pthread_mutex_lock(&one_phil->fork[0]->fork_mutex);
-			if (one_phil->fork[0]->in_use == 0)
+			pthread_mutex_lock(&one_phil->fork_right->fork_mutex);
+			if (one_phil->fork_right->in_use == 0)
 			{
-				one_phil->fork[0]->in_use = 1;
-				pthread_mutex_unlock(&one_phil->fork[0]->fork_mutex);
-				pthread_mutex_lock(&one_phil->fork[1]->fork_mutex);
-				if (one_phil->fork[1]->in_use == 0)
+				one_phil->fork_right->in_use = 1;
+				pthread_mutex_unlock(&one_phil->fork_right->fork_mutex);
+				pthread_mutex_lock(&one_phil->fork_left->fork_mutex);
+				if (one_phil->fork_left->in_use == 0)
 				{
-					pthread_mutex_lock(&one_phil->fork[0]->fork_mutex);
+					pthread_mutex_lock(&one_phil->fork_right->fork_mutex);
 					pthread_mutex_lock(&one_phil->philostr->print_mutex);
 					pthread_mutex_lock(&one_phil->philostr->stop_mutex);
 					if (one_phil->philostr->stop == 1)
@@ -63,21 +63,21 @@ void *living(void *data)
 					printf("%i is eating\n", one_phil->id_num);
 					pthread_mutex_unlock(&one_phil->philostr->print_mutex);
 					usleep(one_phil->philostr->time_to_eat * 1000);
-					one_phil->fork[0]->in_use = 0;
-					pthread_mutex_unlock(&one_phil->fork[0]->fork_mutex);
-					pthread_mutex_unlock(&one_phil->fork[1]->fork_mutex);
+					one_phil->fork_right->in_use = 0;
+					pthread_mutex_unlock(&one_phil->fork_right->fork_mutex);
+					pthread_mutex_unlock(&one_phil->fork_left->fork_mutex);
 					one_phil->last_meal_eaten = get_time_ms();
 					break;
 				}
 				else
 				{
-					pthread_mutex_unlock(&one_phil->fork[1]->fork_mutex);
+					pthread_mutex_unlock(&one_phil->fork_left->fork_mutex);
 					usleep(1 * 1000);
 				}
 			}
 			else
 			{
-				pthread_mutex_unlock(&one_phil->fork[0]->fork_mutex);
+				pthread_mutex_unlock(&one_phil->fork_right->fork_mutex);
 				usleep(1 * 1000);
 			}
 		}
