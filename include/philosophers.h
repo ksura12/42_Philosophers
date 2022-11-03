@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/02 16:12:26 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/03 08:25:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_onephil
 	
 	pthread_t		tid;
 	time_t			time_start;
+	time_t			last_meal_eaten;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
