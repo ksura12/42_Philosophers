@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 14:45:03 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 15:38:08 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 void *living(void *data)
 {
 	// (void)data;
-	t_onephil	*one_phil;
+	t_onephil_l	*one_phil;
 
-	one_phil = (t_onephil *)data;
+	one_phil = (t_onephil_l *)data;
 
 	// pthread_mutex_lock(one_phil->print_mutex);
 	// // printf("Thread %lu is living\n", (unsigned long)one_phil->tid);
@@ -89,10 +89,10 @@ void *living(void *data)
 void *supervising(void *data)
 {
 	// (void)data;
-	t_onephil	*supervi;
+	t_onephil_l	*supervi;
 	int			i;
 
-	supervi = (t_onephil *)data;
+	supervi = (t_onephil_l *)data;
 
 	// pthread_mutex_lock(one_phil->print_mutex);
 	// // printf("Thread %lu is living\n", (unsigned long)one_phil->tid);
@@ -120,36 +120,41 @@ void *supervising(void *data)
 	return (NULL);
 }
 
-void	philos(t_onephil **phili)
+void	philos(t_onephil_l *phili)
 {
 	int c;
+	t_onephil_l *tmp;
 	
 	// pthread_t	tid[600];
-
+	tmp = phili;
 	// philostr->counter = 0;
-	c = phili[0]->philostr->philo_num + 1;
-	pthread_create(&phili[c]->tid, NULL, &supervising, &phili[c]);
-	c = phili[0]->philostr->philo_num;
-	while (phili[0]->philostr->philo_num > c - 1)
+	c = tmp->philostr->philo_num + 1;
+	pthread_create(&tmp->tid, NULL, &supervising, &tmp);
+	c = tmp->philostr->philo_num;
+	while (tmp->philostr->philo_num > c - 1)
 	{
-		phili[c]->id_num = c;
-		pthread_create(&phili[c]->tid, NULL, &living, &phili[c]);
+		tmp->id_num = c;
+		pthread_create(&tmp->tid, NULL, &living, &tmp);
+		tmp = tmp->next;
 		c++;
 	}
-	c--;
-	while (c >= 0)
+	
+	tmp = phili;
+	c = tmp->philostr->philo_num;
+	while (tmp->philostr->philo_num > c - 1)
 	{
 		// print_time(philostr);
-		pthread_join(phili[c]->tid, NULL);
-		pthread_mutex_lock(&phili[0]->philostr->print_mutex);
-		printf("Joining thread n: %lu with main\n", (unsigned long)phili[c]->tid);
-		pthread_mutex_unlock(&phili[0]->philostr->print_mutex);
+		pthread_join(tmp->tid, NULL);
+		pthread_mutex_lock(&phili->philostr->print_mutex);
+		printf("Joining thread n: %lu with main\n", (unsigned long)tmp->tid);
+		pthread_mutex_unlock(&phili->philostr->print_mutex);
+		tmp = tmp->next;
 		// free (tid[c]);
-		c--;
+		c++;
 	}
 }
 
-int	lifetime_counter(t_onephil	*one_phil)
+int	lifetime_counter(t_onephil_l	*one_phil)
 {
 	time_t	time;
 	

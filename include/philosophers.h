@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 12:36:26 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 15:24:23 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,26 @@ typedef struct s_philostr
 
 typedef struct s_onephil_l
 {
-	int				id_num;
-	time_t			last_meal_eaten;
-	t_fork			*fork_left;
-	t_fork			*fork_right;
-	pthread_t		tid;
-	t_philostr		*philostr;
-	t_onephil_l		*next;
+	int					id_num;
+	time_t				last_meal_eaten;
+	t_fork				*fork_left;
+	t_fork				*fork_right;
+	pthread_t			tid;
+	t_philostr			*philostr;
+	struct s_onephil_l	*next;
 } t_onephil_l;
 
 //timing.c
 time_t		get_time_ms(void);
 void		print_time(t_philostr	*philos);
-void		print_time_thread(t_onephil	*one_phil);
+void		print_time_thread(t_onephil_l	*one_phil);
 
 //init.c
-t_onephil	**init(char **argv);
+t_onephil_l	*init(char **argv);
 
 //philos.c
-void		philos(t_onephil **phili);
-int			lifetime_counter(t_onephil	*one_phil);
+void		philos(t_onephil_l *phili);
+int			lifetime_counter(t_onephil_l	*one_phil);
 
 //main.c
 int			is_digit(char **argv);

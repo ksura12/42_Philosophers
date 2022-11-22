@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 13:22:36 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:08:39 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,19 @@ int	ft_atoi(const char *str)
 	return (n * m);
 }
 
-t_onephil	*ft_table(t_philostr	*philostr)
-{
-	t_onephil	*new_table;
-	//char		*tmp;
+// t_onephil	*ft_table(t_philostr	*philostr)
+// {
+// 	t_onephil	*new_table;
+// 	//char		*tmp;
 
-	new_table = malloc(sizeof (t_onephil *));
-	if (!new_table)
-		return (NULL);
-	new_table->fork_right = malloc(sizeof(t_fork));
-	pthread_mutex_init(&new_table->fork_right->fork_mutex, NULL);
-	new_table->philostr = philostr;
-	return (new_table);
-}
+// 	new_table = malloc(sizeof (t_onephil *));
+// 	if (!new_table)
+// 		return (NULL);
+// 	new_table->fork_right = malloc(sizeof(t_fork));
+// 	pthread_mutex_init(&new_table->fork_right->fork_mutex, NULL);
+// 	new_table->philostr = philostr;
+// 	return (new_table);
+// }
 
 t_onephil_l	*ft_phillast(t_onephil_l *lst)
 {
@@ -78,25 +78,27 @@ void	ft_philadd_back(t_onephil_l **lst, t_onephil_l *new)
 t_onephil_l	*ft_philnew(t_philostr *philostr, int c)
 {
 	t_onephil_l	*new_phil;
-	char		*tmp;
+	// char		*tmp;
 
-	new_phil = (t_onephil_l	 *)malloc(sizeof (t_onephil_l));
+	new_phil = (t_onephil_l *)malloc(sizeof (t_onephil_l));
 	if (!new_phil)
+		return (NULL);
+	new_phil->fork_right = (t_fork *)malloc(sizeof(t_fork *));
+	if (!new_phil->fork_right)
 		return (NULL);
 	new_phil->id_num = c;
 	new_phil->philostr = philostr;
 	new_phil->last_meal_eaten = 0;
-	new_phil->fork_left =
 	pthread_mutex_init(&new_phil->fork_right->fork_mutex, NULL);
 	new_phil->next = NULL;
 	return (new_phil);
 }
 
-t_onephil_l **init(char **argv)
+t_onephil_l *init(char **argv)
 {
 	t_philostr	*philostr;
 	int			c;
-	int			c_next;
+	// int			c_next;
 	t_onephil_l	*one_phil;
 	t_onephil_l	*tmp;
 	//t_onephil	*supervis;
@@ -105,6 +107,7 @@ t_onephil_l **init(char **argv)
 	// one_phil = malloc(sizeof(t_onephil *) * 601);
 	// if (one_phil == NULL)
 	// 	return (NULL);
+	one_phil = NULL;
 	philostr = malloc(sizeof(t_philostr));
 	if (philostr == NULL)
 		return (NULL);
@@ -127,8 +130,9 @@ t_onephil_l **init(char **argv)
 	philostr->dead = 0;
 	pthread_mutex_unlock(&philostr->dead_mutex);
 	c = philostr->philo_num;
-	while (c >= 0)
+	while (c > 0)
 	{	
+		printf("philo_num: %i\n", c);
 		if (c == philostr->philo_num)
 			one_phil = ft_philnew(philostr, c);
 		else
@@ -142,16 +146,19 @@ t_onephil_l **init(char **argv)
 	}
 	c = philostr->philo_num;
 	tmp = one_phil;
-	while (c >= 0)
+	while (c > 0)
 	{
-		if (c == 0)
-		{
+		if (c == 0 && philostr->philo_num > 1)
 			tmp->next = one_phil;
-			tmp->fork_left = one_phil->fork_right;
-		}
-		else
+		if (tmp->next != NULL)
+		{
+			printf("philo_num: %i\n", c);
+			pthread_mutex_lock(&tmp->next->fork_right->fork_mutex);
 			tmp->fork_left = tmp->next->fork_right;
+			pthread_mutex_unlock(&tmp->next->fork_right->fork_mutex);
+			tmp = tmp->next;
+		}
 		c--;
 	}
-	return (&one_phil);
+	return (one_phil);
 }

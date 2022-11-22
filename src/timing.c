@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 11:47:20 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 15:17:35 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_time(t_philostr	*philostr)
 	printf("%ldms", time - time_start);
 	return ;
 }
-void	print_time_thread(t_onephil	*one_phil)
+void	print_time_thread(t_onephil_l	*one_phil)
 {
 	time_t	time;
 	time_t	time_start;

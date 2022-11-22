@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 14:01:27 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 15:24:02 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int	checker(int argc, char **argv)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_onephil	**one_phil;
+	t_onephil_l	*one_phil;
 	(void)envp;
 	if (!checker(argc, argv))
 		return (0);
 	one_phil = init(argv);
 	printf("start time: ");
-	print_time(one_phil[0]->philostr);
+	print_time(one_phil->philostr);
 	printf("\n");
 	// printf("\n");
 
@@ -70,7 +70,7 @@ int	main(int argc, char **argv, char **envp)
 	//	free(one_phil[0]->fork)
 	
 	//FREeing the only allocated philostr
-	free (one_phil[0]->philostr);
+	free (one_phil->philostr);
 	free (one_phil);
 	
 	return (0);
