@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 18:47:22 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 19:41:04 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	philos(t_onephil_l *phili)
 	
 	tmp = phili;
 	c = tmp->philostr->philo_num;
-	while (tmp->philostr->philo_num > c - 1)
+	while (c > 0)
 	{
 		// print_time(philostr);
 		pthread_join(tmp->tid, NULL);
@@ -154,7 +154,7 @@ void	philos(t_onephil_l *phili)
 		pthread_mutex_unlock(&phili->philostr->print_mutex);
 		tmp = tmp->next;
 		// free (tid[c]);
-		c++;
+		c--;
 	}
 }
 
@@ -163,8 +163,10 @@ int	lifetime_counter(t_onephil_l	*one_phil)
 	time_t	time;
 	
 	time = get_time_ms();
+	pthread_mutex_lock(&one_phil->last_meal_mutex);
 	if (time - one_phil->last_meal_eaten >= one_phil->philostr->time_to_die)
 	{
+		pthread_mutex_unlock(&one_phil->last_meal_mutex);
 		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
 		one_phil->philostr->stop = 1;
 		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
@@ -174,5 +176,6 @@ int	lifetime_counter(t_onephil_l	*one_phil)
 		pthread_mutex_unlock(&one_phil->philostr->print_mutex);
 		return (1);
 	}
+	pthread_mutex_unlock(&one_phil->last_meal_mutex);
 	return (0);
 }

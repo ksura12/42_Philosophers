@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 18:35:00 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 20:11:17 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ t_onephil_l	*ft_philnew(t_philostr *philostr, int c)
 	new_phil->philostr = philostr;
 	new_phil->last_meal_eaten = 0;
 	pthread_mutex_init(&new_phil->fork_right->fork_mutex, NULL);
+	pthread_mutex_init(&new_phil->last_meal_mutex, NULL);
 	new_phil->next = NULL;
 	return (new_phil);
 }
