@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 18:12:22 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 18:47:22 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void *living(void *data)
 	// pthread_mutex_unlock(one_phil->print_mutex);
 	while(1)
 	{
-		printf("in while");
+		printf("in while\n");
 		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
 		if (one_phil->philostr->stop == 1)
 		{
@@ -111,7 +111,7 @@ void *supervising(void *data)
 		while (i < supervi->philostr->philo_num)
 		{
 			printf("in while\n");
-			if (lifetime_counter(&supervi[i + 1]) == 1)
+			if (lifetime_counter(supervi) == 1)
 			{
 				printf("in if\n");
 				return (NULL);
@@ -134,8 +134,8 @@ void	philos(t_onephil_l *phili)
 	// philostr->counter = 0;
 	super = ft_philnew(phili->philostr, 0);
 	pthread_create(&super->tid, NULL, &supervising, &super);
-	c = tmp->philostr->philo_num;
-	while (tmp->philostr->philo_num > c - 1)
+	c = 0;
+	while (tmp->philostr->philo_num < c)
 	{
 		tmp->id_num = c;
 		pthread_create(&tmp->tid, NULL, &living, &tmp);
