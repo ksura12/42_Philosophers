@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 17:08:39 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:31:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_onephil_l	*ft_phillast(t_onephil_l *lst)
 	if (!lst)
 		return (NULL);
 	last = lst;
-	while (last->next != NULL)
+	while (last->next)
 		last = last->next;
 	return (last);
 }
@@ -136,8 +136,10 @@ t_onephil_l *init(char **argv)
 		if (c == philostr->philo_num)
 			one_phil = ft_philnew(philostr, c);
 		else
+		{
 			tmp = ft_philnew(philostr, c);
 			ft_philadd_back(&one_phil, tmp);
+		}
 		c--;
 		// one_phil[c].fork_right = malloc(sizeof(t_fork *));
 		// pthread_mutex_init(&one_phil[c].fork_right->fork_mutex, NULL);
@@ -152,7 +154,7 @@ t_onephil_l *init(char **argv)
 			tmp->next = one_phil;
 		if (tmp->next != NULL)
 		{
-			printf("philo_num: %i\n", c);
+			printf("philo_num before lock: %i\n", c);
 			pthread_mutex_lock(&tmp->next->fork_right->fork_mutex);
 			tmp->fork_left = tmp->next->fork_right;
 			pthread_mutex_unlock(&tmp->next->fork_right->fork_mutex);

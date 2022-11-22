@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 15:24:23 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:51:35 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ void		print_time_thread(t_onephil_l	*one_phil);
 
 //init.c
 t_onephil_l	*init(char **argv);
+t_onephil_l	*ft_philnew(t_philostr *philostr, int c);
+void		ft_philadd_back(t_onephil_l **lst, t_onephil_l *new);
+t_onephil_l	*ft_phillast(t_onephil_l *lst);
 
 //philos.c
 void		philos(t_onephil_l *phili);

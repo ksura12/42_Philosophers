@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 15:38:08 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:55:18 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,10 @@ void *supervising(void *data)
 		i = 0;
 		while (i < supervi->philostr->philo_num)
 		{
+			printf("in while\n");
 			if (lifetime_counter(&supervi[i + 1]) == 1)
 			{
+				printf("in if\n");
 				return (NULL);
 			}
 			i++;
@@ -124,12 +126,13 @@ void	philos(t_onephil_l *phili)
 {
 	int c;
 	t_onephil_l *tmp;
+	t_onephil_l *super;
 	
 	// pthread_t	tid[600];
 	tmp = phili;
 	// philostr->counter = 0;
-	c = tmp->philostr->philo_num + 1;
-	pthread_create(&tmp->tid, NULL, &supervising, &tmp);
+	super = ft_philnew(phili->philostr, 0);
+	pthread_create(&super->tid, NULL, &supervising, &super);
 	c = tmp->philostr->philo_num;
 	while (tmp->philostr->philo_num > c - 1)
 	{
