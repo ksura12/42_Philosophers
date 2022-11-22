@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/03 15:35:27 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/22 12:36:26 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_philostr
 	pthread_mutex_t	stop_mutex;
 } t_philostr;
 
-typedef struct s_onephil
+typedef struct s_onephil_l
 {
 	int				id_num;
 	time_t			last_meal_eaten;
@@ -50,8 +50,8 @@ typedef struct s_onephil
 	t_fork			*fork_right;
 	pthread_t		tid;
 	t_philostr		*philostr;
-	//t_onephil		*next;
-} t_onephil;
+	t_onephil_l		*next;
+} t_onephil_l;
 
 //timing.c
 time_t		get_time_ms(void);
