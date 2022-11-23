@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 19:38:35 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/23 12:00:34 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_onephil_l	*ft_phillast(t_onephil_l *lst);
 //philos.c
 void		philos(t_onephil_l *phili);
 int			lifetime_counter(t_onephil_l	*one_phil);
+void		supervisor(t_onephil_l *philis);
 
 //main.c
 int			is_digit(char **argv);

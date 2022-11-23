@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 19:41:04 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/23 12:52:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void *living(void *data)
 	while(1)
 	{
 		printf("in while\n");
+		printf("in here\n");
 		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
 		if (one_phil->philostr->stop == 1)
 		{
@@ -108,9 +109,12 @@ void *supervising(void *data)
 	while (1)
 	{
 		i = 0;
+		// printf("timo to die:%i\n",supervi->philostr->time_to_die );
 		while (i < supervi->philostr->philo_num)
 		{
 			printf("in while\n");
+			printf("stop value %i\n", supervi->philostr->stop);
+			printf("time to eat %i\n", supervi->philostr->time_to_eat);
 			if (lifetime_counter(supervi) == 1)
 			{
 				printf("in if\n");
@@ -123,26 +127,31 @@ void *supervising(void *data)
 	return (NULL);
 }
 
+void	supervisor(t_onephil_l *philis)
+{
+	t_onephil_l *super;
+	
+	super = ft_philnew(philis->philostr, -1);
+	pthread_create(&super->tid, NULL, &supervising, &super);
+}
+
 void	philos(t_onephil_l *phili)
 {
 	int c;
 	t_onephil_l *tmp;
-	t_onephil_l *super;
 	
 	// pthread_t	tid[600];
 	tmp = phili;
 	// philostr->counter = 0;
-	super = ft_philnew(phili->philostr, 0);
-	pthread_create(&super->tid, NULL, &supervising, &super);
+	// printf("timo to die:%i\n",phili->philostr->time_to_die );
 	c = 0;
-	while (tmp->philostr->philo_num < c)
+	while (tmp && tmp->philostr->philo_num > c)
 	{
 		tmp->id_num = c;
 		pthread_create(&tmp->tid, NULL, &living, &tmp);
 		tmp = tmp->next;
 		c++;
 	}
-	
 	tmp = phili;
 	c = tmp->philostr->philo_num;
 	while (c > 0)
@@ -168,6 +177,7 @@ int	lifetime_counter(t_onephil_l	*one_phil)
 	{
 		pthread_mutex_unlock(&one_phil->last_meal_mutex);
 		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
+		printf("stop value %i\n", one_phil->philostr->stop);
 		one_phil->philostr->stop = 1;
 		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
 		pthread_mutex_lock(&one_phil->philostr->print_mutex);

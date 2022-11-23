@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 20:11:17 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/23 12:44:23 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,15 @@ t_onephil_l	*ft_phillast(t_onephil_l *lst)
 void	ft_philadd_back(t_onephil_l **lst, t_onephil_l *new)
 {
 	if (!*lst)
+	{
 		*lst = new;
+		printf("first of list\n");
+	}
+		
 	else
 	{
 		ft_phillast(*lst)->next = new;
+		printf("next in list list\n");
 	}
 }
 
@@ -92,6 +97,8 @@ t_onephil_l	*ft_philnew(t_philostr *philostr, int c)
 	pthread_mutex_init(&new_phil->fork_right->fork_mutex, NULL);
 	pthread_mutex_init(&new_phil->last_meal_mutex, NULL);
 	new_phil->next = NULL;
+	printf("timo to die:%i\n",philostr->time_to_die );
+	printf("philo_num:%i\n",philostr->philo_num );
 	return (new_phil);
 }
 
@@ -149,10 +156,16 @@ t_onephil_l *init(char **argv)
 	}
 	c = philostr->philo_num;
 	tmp = one_phil;
+	printf("philo id: %i\n", one_phil->id_num);
+	// printf("philo next id: %i\n", one_phil->next->id_num);
 	while (c > 0)
 	{
-		if (c == 0 && philostr->philo_num > 1)
-			tmp->next = one_phil;
+		// if (c == 0 && philostr->philo_num > 1)
+		// {
+		// 	tmp->next = one_phil;
+		// 	printf("closing loop of id: %i and id %i\n",tmp->id_num, one_phil->id_num);
+		// }
+			
 		if (tmp->next != NULL)
 		{
 			printf("philo_num before lock: %i\n", c);
@@ -162,6 +175,11 @@ t_onephil_l *init(char **argv)
 			tmp = tmp->next;
 		}
 		c--;
+	}
+	if (philostr->philo_num > 1)
+	{
+			tmp->next = one_phil;
+			printf("closing loop of id: %i and id %i\n",tmp->id_num, one_phil->id_num);
 	}
 	return (one_phil);
 }
