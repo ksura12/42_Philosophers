@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/23 12:52:11 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/23 12:54:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,16 @@ void *living(void *data)
 		printf("in while\n");
 		printf("in here\n");
 		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
+		printf("in here1\n");
 		if (one_phil->philostr->stop == 1)
 		{
+			printf("in here2\n");
 			pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
 			return(NULL);
 		}
+		printf("in here3\n");
 		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
+		printf("in here4\n");
 		while (1)
 		{
 			pthread_mutex_lock(&one_phil->fork_right->fork_mutex);
