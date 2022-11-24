@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
+/*   By: ksura@student.42wolfsburg.de <ksura@studen +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 20:11:17 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/24 19:47:44 by ksura@student.42 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,46 +53,55 @@ int	ft_atoi(const char *str)
 // 	return (new_table);
 // }
 
-t_onephil_l	*ft_phillast(t_onephil_l *lst)
+t_philos	**ft_philnew(t_philostr *philostr)
 {
-	t_onephil_l	*last;
+	t_philos	**philos;
+	int			i;
 
-	if (!lst)
+	philos = malloc(sizeof (t_philos) * philostr->philo_num);
+	if (!philos)
 		return (NULL);
-	last = lst;
-	while (last->next)
-		last = last->next;
-	return (last);
-}
-
-void	ft_philadd_back(t_onephil_l **lst, t_onephil_l *new)
-{
-	if (!*lst)
-		*lst = new;
-	else
+	i = 0;
+	while (i < philostr->philo_num)
 	{
-		ft_phillast(*lst)->next = new;
+		philos[i] = malloc(sizeof(t_philos));
+		philos[i]->id_num = i + 1;
+		philos[i]->philostr = philostr;
+		philos[i]->last_meal_eaten = 0;
+		pthread_mutex_init(&philos[i]->last_meal_mutex, NULL);
 	}
+	return (philos);
 }
 
-t_onephil_l	*ft_philnew(t_philostr *philostr, int c)
+t_philostr	*init_all(char **argv)
 {
-	t_onephil_l	*new_phil;
-	// char		*tmp;
+	t_philostr	*philostr;
+	int			c;
+	t_philos	**one_phil;
+	
+	philostr = malloc(sizeof(t_philostr));
+	if (philostr == NULL)
+		return (NULL);
+	philostr->time_start = get_time_ms();
+	philostr->philo_num = ft_atoi(argv[1]);
+	philostr->time_to_die = ft_atoi(argv[2]);
+	philostr->time_to_eat = ft_atoi(argv[3]);
+	philostr->time_to_sleep = ft_atoi(argv[4]);
+	if (argv[5])
+		philostr->c_eat = ft_atoi(argv[5]);
+	else
+		philostr->c_eat = -1;
+	pthread_mutex_init(&philostr->print_mutex, NULL);
+	pthread_mutex_init(&philostr->dead_mutex, NULL);
+	pthread_mutex_init(&philostr->stop_mutex, NULL);
+	pthread_mutex_lock(&philostr->stop_mutex);
+	philostr->stop = 0;
+	pthread_mutex_unlock(&philostr->stop_mutex);
+	pthread_mutex_lock(&philostr->dead_mutex);
+	philostr->dead = 0;
+	pthread_mutex_unlock(&philostr->dead_mutex);
+	one_phil = ft_philnew()
 
-	new_phil = (t_onephil_l *)malloc(sizeof (t_onephil_l));
-	if (!new_phil)
-		return (NULL);
-	new_phil->fork_right = (t_fork *)malloc(sizeof(t_fork *));
-	if (!new_phil->fork_right)
-		return (NULL);
-	new_phil->id_num = c;
-	new_phil->philostr = philostr;
-	new_phil->last_meal_eaten = 0;
-	pthread_mutex_init(&new_phil->fork_right->fork_mutex, NULL);
-	pthread_mutex_init(&new_phil->last_meal_mutex, NULL);
-	new_phil->next = NULL;
-	return (new_phil);
 }
 
 t_onephil_l *init(char **argv)

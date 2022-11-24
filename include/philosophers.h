@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
+/*   By: ksura@student.42wolfsburg.de <ksura@studen +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/22 19:38:35 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/24 19:48:03 by ksura@student.42 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ typedef struct s_philostr
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	stop_mutex;
+	t_phils			**philos;
+	t_fork			**forks;
 } t_philostr;
 
-typedef struct s_onephil_l
+typedef struct s_philos
 {
 	int					id_num;
 	time_t				last_meal_eaten;
@@ -51,8 +53,7 @@ typedef struct s_onephil_l
 	t_fork				*fork_right;
 	pthread_t			tid;
 	t_philostr			*philostr;
-	struct s_onephil_l	*next;
-} t_onephil_l;
+} t_philos;
 
 //timing.c
 time_t		get_time_ms(void);
@@ -61,7 +62,7 @@ void		print_time_thread(t_onephil_l	*one_phil);
 
 //init.c
 t_onephil_l	*init(char **argv);
-t_onephil_l	*ft_philnew(t_philostr *philostr, int c);
+t_philos	**ft_philnew(t_philostr *philostr);
 void		ft_philadd_back(t_onephil_l **lst, t_onephil_l *new);
 t_onephil_l	*ft_phillast(t_onephil_l *lst);
 
