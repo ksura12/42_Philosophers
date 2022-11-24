@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/23 12:00:34 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/24 13:03:41 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,16 @@ typedef struct s_philostr
 
 typedef struct s_onephil_l
 {
+	t_philostr			*philostr;
+
+	
 	int					id_num;
 	time_t				last_meal_eaten;
 	pthread_mutex_t		last_meal_mutex;
-	t_fork				*fork_left;
+	// t_fork				**fork_left;
 	t_fork				*fork_right;
 	pthread_t			tid;
-	t_philostr			*philostr;
+
 	struct s_onephil_l	*next;
 } t_onephil_l;
 
@@ -64,6 +67,7 @@ t_onephil_l	*init(char **argv);
 t_onephil_l	*ft_philnew(t_philostr *philostr, int c);
 void		ft_philadd_back(t_onephil_l **lst, t_onephil_l *new);
 t_onephil_l	*ft_phillast(t_onephil_l *lst);
+t_philostr *init_main_str(char **argv);
 
 //philos.c
 void		philos(t_onephil_l *phili);

@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/23 12:49:45 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/24 13:02:20 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,33 @@ int	checker(int argc, char **argv)
 	return(1);
 }
 
+void	printtable(t_onephil_l	*table);
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_onephil_l	*one_phil;
+	// t_onephil_l	*table;
 	(void)envp;
 	if (!checker(argc, argv))
 		return (0);
-	one_phil = init(argv);
-	printf("start time: ");
-	print_time(one_phil->philostr);
-	printf("\n");
-	// printf("\n");
+	init_main_str(argv);
+	// table = init(argv);
 
+	
+	// printf("start time: ");
+	// print_time(table->philostr);
+	// printf("\n");
+	// printf("\n");
 	// print_time(philos_struc);
-	supervisor(one_phil);
-	philos(one_phil);
+	// supervisor(one_phil);
+	// printf("main: one_phil->next->fork_right->in_use: %i\n", one_phil->next->fork_right->in_use);
+	// philos(one_phil);
 	//Free forks
 	//while()
 	//	free(one_phil[0]->fork)
 	
-	//FREeing the only allocated philostr
-	free (one_phil->philostr);
-	free (one_phil);
+	//Freeing the only allocated philostr
+	// free (one_phil->philostr);
+	// free (one_phil);
 	
 	return (0);
 }
