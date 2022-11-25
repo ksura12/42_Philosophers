@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 19:05:54 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 19:09:41 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,9 @@ void	eat_routine(t_philos *philo)
 		sleeping(philo->philostr, philo->philostr->time_to_eat);
 		pthread_mutex_unlock(&fork_r->fork_mutex);
 		pthread_mutex_unlock(&fork_l->fork_mutex);
+		pthread_mutex_lock(&philo->last_meal_mutex);
+		philo->last_meal_eaten = get_time_ms();
+		pthread_mutex_unlock(&philo->last_meal_mutex);
 		philo->nb_meals += 1;
 		// if (philo->nb_meals == philo->philostr->c_eat)
 	}
