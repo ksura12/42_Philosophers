@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 15:31:00 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 16:37:03 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_philos
 //timing.c
 time_t		get_time_ms(void);
 void		print_time(t_philostr	*philostr);
-void	sleeping(t_philostr *philostr, time_t sleeping_time);
+void	sleeping(time_t sleeping_time);
 // void		print_time_thread(t_onephil_l	*one_phil);
 
 //init.c

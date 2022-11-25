@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 15:35:28 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 16:45:24 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	taking_fork_l(t_philos *philo, t_fork *fork_r, t_fork *fork_l)
 		pthread_mutex_lock(&fork_r->fork_mutex);
 		print_event(philo->philostr, philo->id_num, 1);
 		print_event(philo->philostr, philo->id_num, 2);
-		sleeping(philo->philostr, philo->philostr->time_to_eat * 1000);
-		// usleep(philo->philostr->time_to_eat * 1000);
+		// sleeping(philo->philostr->time_to_eat * 1000);
+		usleep(philo->philostr->time_to_eat * 1000);
 		fork_r->in_use = 0;
 		pthread_mutex_unlock(&fork_r->fork_mutex);
 		pthread_mutex_unlock(&fork_l->fork_mutex);
@@ -85,7 +85,7 @@ void	eating(t_philos *philo)
 			else
 			{
 				pthread_mutex_unlock(&fork_r->fork_mutex);
-				usleep(10 * 1000);
+				usleep(1 * 1000);
 			}
 	}
 }
@@ -93,6 +93,7 @@ void	eating(t_philos *philo)
 void	thinkandsleep(t_philos *philo)
 {
 	print_event(philo->philostr, philo->id_num, 3);
+	// sleeping(philo->philostr, philo->philostr->time_to_sleep * 1000);
 	usleep(philo->philostr->time_to_sleep * 1000);
 	print_event(philo->philostr, philo->id_num, 4);
 	usleep(philo->philostr->time_to_think * 1000);
