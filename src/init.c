@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 15:10:52 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 18:32:35 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,6 @@ t_philostr	*init_all(char **argv)
 	philostr->forks = ft_forks(philostr);
 	philostr->philos = ft_philnew(philostr);
 	philostr->time_to_think = (philostr->time_to_die 
-	- philostr->time_to_sleep - philostr->time_to_eat) / 2;
+	- philostr->time_to_sleep - philostr->time_to_eat) / 4;
 	return (philostr);
 }

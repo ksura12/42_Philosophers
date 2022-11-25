@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 16:36:57 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 18:28:01 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ void	print_time(t_philostr	*philostr)
 	return ;
 }
 
-void	sleeping(time_t sleeping_time)
+void	sleeping(t_philostr *philostr, time_t sleeping_time)
 {
 	time_t	end;
 
 	end = get_time_ms() + sleeping_time;
 	while(get_time_ms() < end)
 	{
-		// if (!stop_checker(philostr))
-		// 	return;
+		if (!stop_checker(philostr))
+			return;
 		usleep(100);
 	}
 }
