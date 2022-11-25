@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 13:07:41 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 14:19:49 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ void	print_main_str(t_philostr	*main_str)
 t_philostr	*init_all(char **argv)
 {
 	t_philostr	*philostr;
-	// int			c;
-
+	
 	philostr = malloc(sizeof(t_philostr));
 	if (philostr == NULL)
 		return (NULL);
@@ -131,5 +130,7 @@ t_philostr	*init_all(char **argv)
 	philostr->dead = 0;
 	philostr->forks = ft_forks(philostr);
 	philostr->philos = ft_philnew(philostr);
+	philostr->time_to_think = (philostr->time_to_die 
+	- philostr->time_to_sleep - philostr->time_to_eat) / 2;
 	return (philostr);
 }
