@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 18:28:19 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 19:05:11 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_philos
 {
 	t_philostr			*philostr;
 	int					id_num;
+	int					nb_meals;
 	time_t				last_meal_eaten;
 	pthread_mutex_t		last_meal_mutex;
 	pthread_t			tid;
@@ -74,6 +75,9 @@ void	print_main_str(t_philostr	*main_str);
 //philos.c
 void	table(t_philostr *philostr);
 void	*living(void *data);
+void	eat_routine(t_philos *philo);
+void	sleep_routine(t_philos *philo);
+void	think_routine(t_philos *philo);
 int		stop_checker(t_philostr *philostr);
 int	lifetime_counter(t_philos	*one_phil);
 // void		philos(t_onephil_l *phili);

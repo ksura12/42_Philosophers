@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 18:32:35 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 18:55:12 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_philos	**ft_philnew(t_philostr *philostr)
 	{
 		philos[i] = malloc(sizeof(t_philos));
 		philos[i]->id_num = i + 1;
+		philos[i]->nb_meals = 0;
 		philos[i]->philostr = philostr;
 		philos[i]->last_meal_eaten = get_time_ms();
 		pthread_mutex_init(&philos[i]->last_meal_mutex, NULL);
