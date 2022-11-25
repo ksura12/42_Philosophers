@@ -6,7 +6,7 @@
 #    By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 09:24:12 by ksura             #+#    #+#              #
-#    Updated: 2022/11/25 11:12:34 by ksura            ###   ########.fr        #
+#    Updated: 2022/11/25 13:17:27 by ksura            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCDIR = src/
 OBJDIR = build/
 
 
-SRC := main.c timing.c init.c philos.c
+SRC := main.c timing.c init.c philos.c printing.c
 
 GREEN = \033[0;32m
 RED = \033[0;31m

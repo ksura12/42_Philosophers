@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 10:41:13 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 12:42:40 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	main(int argc, char **argv, char **envp)
 	if (!checker(argc, argv))
 		return (0);
 	philostr = init_all(argv);
-	print_main_str(philostr);
-	// init_table(argv);
+	// print_main_str(philostr);
+	table(philostr);
 	// table = init(argv);
 
 	

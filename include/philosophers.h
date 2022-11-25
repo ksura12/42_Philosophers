@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 11:11:40 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 13:17:50 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_philos
 
 //timing.c
 time_t		get_time_ms(void);
-void		print_time(t_philostr	*philos);
+void		print_time(t_philostr	*philostr);
 // void		print_time_thread(t_onephil_l	*one_phil);
 
 //init.c
@@ -69,6 +69,9 @@ t_philostr	*init_all(char **argv);
 void	print_main_str(t_philostr	*main_str);
 
 //philos.c
+void	table(t_philostr *philostr);
+void	*living(void *data);
+int		stop_checker(t_philostr *philostr);
 // void		philos(t_onephil_l *phili);
 // int			lifetime_counter(t_onephil_l	*one_phil);
 // void		supervisor(t_onephil_l *philis);
@@ -78,7 +81,8 @@ int			is_digit(char **argv);
 int			checker(int argc, char **argv);
 int			main(int argc, char **argv, char **envp);
 
-
+//printing.c
+void	print_event(t_philostr *pstr, int phil_id, int event);
 
 
 #endif
