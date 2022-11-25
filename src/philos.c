@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 14:19:22 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 15:35:28 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,14 @@ int	taking_fork_l(t_philos *philo, t_fork *fork_r, t_fork *fork_l)
 		pthread_mutex_lock(&fork_r->fork_mutex);
 		print_event(philo->philostr, philo->id_num, 1);
 		print_event(philo->philostr, philo->id_num, 2);
-		usleep(philo->philostr->time_to_eat * 1000);
+		sleeping(philo->philostr, philo->philostr->time_to_eat * 1000);
+		// usleep(philo->philostr->time_to_eat * 1000);
 		fork_r->in_use = 0;
 		pthread_mutex_unlock(&fork_r->fork_mutex);
 		pthread_mutex_unlock(&fork_l->fork_mutex);
+		pthread_mutex_lock(&philo->last_meal_mutex);
 		philo->last_meal_eaten = get_time_ms();
+		pthread_mutex_unlock(&philo->last_meal_mutex);
 		return (0);
 	}
 	else
@@ -89,11 +92,6 @@ void	eating(t_philos *philo)
 
 void	thinkandsleep(t_philos *philo)
 {
-	int		timetothink;
-
-	timetothink = (philo->philostr->time_to_die 
-	- philo->philostr->time_to_sleep - philo->philostr->time_to_eat) / 2;
-	
 	print_event(philo->philostr, philo->id_num, 3);
 	usleep(philo->philostr->time_to_sleep * 1000);
 	print_event(philo->philostr, philo->id_num, 4);
@@ -114,37 +112,27 @@ void	*living(void *data)
 	return (NULL);
 }
 
-// void *supervising(void *data)
-// {
-// 	// (void)data;
-// 	t_onephil_l	*supervi;
-// 	int			i;
+void *supervising(void *data)
+{
+	// (void)data;
+	t_philostr	*philostr;
+	int			i;
 
-// 	supervi = (t_onephil_l *)data;
-// 	pthread_mutex_lock(&supervi->philostr->stop_mutex);
-// 	supervi->philostr->stop = 1;
-// 	pthread_mutex_unlock(&supervi->philostr->stop_mutex);
-// 	printf("supervi->philostr->philo_num%i\n",supervi->philostr->philo_num );
-// 	while (1)
-// 	{
-// 		i = 0;
-		
-// 		while (i < supervi->philostr->philo_num)
-// 		{
-// 			printf("in while\n");
-// 			printf("stop value %i\n", supervi->philostr->stop);
-// 			printf("time to eat %i\n", supervi->philostr->time_to_eat);
-// 			if (lifetime_counter(supervi) == 1)
-// 			{
-// 				printf("in if\n");
-// 				return (NULL);
-// 			}
-// 			i++;
-// 		}
-
-// 	}
-// 	return (NULL);
-// }
+	philostr = (t_philostr *)data;
+	while (1)
+	{
+		i = 0;
+		while (i < philostr->philo_num)
+		{
+			if (lifetime_counter(philostr->philos[i]) == 1)
+			{
+				return (NULL);
+			}
+			i++;
+		}
+	}
+	return (NULL);
+}
 
 // void	supervisor(t_onephil_l *philis)
 // {
@@ -164,6 +152,7 @@ void	table(t_philostr *philostr)
 
 	c = 0;
 	philostr->time_start = get_time_ms();
+	pthread_create(&philostr->super, NULL, &supervising, philostr);
 	while (philostr->philo_num > c)
 	{
 		pthread_create(&philostr->philos[c]->tid, NULL, &living, philostr->philos[c]);
@@ -173,32 +162,26 @@ void	table(t_philostr *philostr)
 	while (c >= 0)
 	{
 		pthread_join(philostr->philos[c]->tid, NULL);
-		pthread_mutex_lock(&philostr->print_mutex);
-		printf("Joining thread n: %lu with main\n", (unsigned long)philostr->philos[c]->tid);
-		pthread_mutex_unlock(&philostr->print_mutex);
 		c--;
 	}
+	pthread_join(philostr->super, NULL);
 }
 
-// int	lifetime_counter(t_onephil_l	*one_phil)
-// {
-// 	time_t	time;
+int	lifetime_counter(t_philos	*one_phil)
+{
+	time_t	time;
 	
-// 	time = get_time_ms();
-// 	pthread_mutex_lock(&one_phil->last_meal_mutex);
-// 	if (time - one_phil->last_meal_eaten >= one_phil->philostr->time_to_die)
-// 	{
-// 		pthread_mutex_unlock(&one_phil->last_meal_mutex);
-// 		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
-// 		printf("stop value %i\n", one_phil->philostr->stop);
-// 		one_phil->philostr->stop = 1;
-// 		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
-// 		pthread_mutex_lock(&one_phil->philostr->print_mutex);
-// 		print_time_thread(one_phil);
-// 		printf("%i died\n", one_phil->id_num);
-// 		pthread_mutex_unlock(&one_phil->philostr->print_mutex);
-// 		return (1);
-// 	}
-// 	pthread_mutex_unlock(&one_phil->last_meal_mutex);
-// 	return (0);
-// }
+	time = get_time_ms();
+	pthread_mutex_lock(&one_phil->last_meal_mutex);
+	if ((time - one_phil->last_meal_eaten) >= one_phil->philostr->time_to_die)
+	{
+		pthread_mutex_unlock(&one_phil->last_meal_mutex);
+		print_event(one_phil->philostr, one_phil->id_num, 5);
+		pthread_mutex_lock(&one_phil->philostr->stop_mutex);
+		one_phil->philostr->stop = 1;
+		pthread_mutex_unlock(&one_phil->philostr->stop_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&one_phil->last_meal_mutex);
+	return (0);
+}
