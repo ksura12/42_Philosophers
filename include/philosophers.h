@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 19:05:11 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 19:25:04 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ typedef struct s_philostr
 	int				time_to_think;
 	int				c_eat;
 	int				stop;
-	int				dead;
+	int				full;
 	time_t			time_start;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	full_mutex;
 	pthread_mutex_t	stop_mutex;
 	t_philos		**philos;
 	t_fork			**forks;

@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 18:55:12 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 19:29:06 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	print_main_str(t_philostr	*main_str)
 	printf("main_str->time_to_sleep: %i\n", main_str->time_to_sleep);
 	printf("main_str->c_eat: %i\n", main_str->c_eat);
 	printf("main_str->stop: %i\n", main_str->stop);
-	printf("main_str->dead: %i\n", main_str->dead);
+	printf("main_str->full: %i\n", main_str->full);
 	printf("main_str->time_start: %li\n", main_str->time_start);
 	while (i < main_str->philo_num)
 	{
@@ -123,12 +123,12 @@ t_philostr	*init_all(char **argv)
 	if (argv[5])
 		philostr->c_eat = ft_atoi(argv[5]);
 	else
-		philostr->c_eat = -1;
+		philostr->c_eat = 0;
 	pthread_mutex_init(&philostr->print_mutex, NULL);
-	pthread_mutex_init(&philostr->dead_mutex, NULL);
+	pthread_mutex_init(&philostr->full_mutex, NULL);
 	pthread_mutex_init(&philostr->stop_mutex, NULL);
 	philostr->stop = 0;
-	philostr->dead = 0;
+	philostr->full = 0;
 	philostr->forks = ft_forks(philostr);
 	philostr->philos = ft_philnew(philostr);
 	philostr->time_to_think = (philostr->time_to_die 

@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 19:09:41 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 19:30:32 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,15 +137,32 @@ void	*living(void *data)
 	t_philos	*philo;
 
 	philo = (t_philos *)data;
-	// if (philo->id_num % 2)
-	// 	think(philo);
+	if (philo->id_num % 2)
+		think_routine(philo);
 	while(stop_checker(philo->philostr))
 	{
 		eat_routine(philo);
+		if (philo->nb_meals == philo->philostr->c_eat)
+		{
+			pthread_mutex_lock(&philo->philostr->full_mutex);
+			philo->philostr->full += 1;
+			pthread_mutex_unlock(&philo->philostr->full_mutex);
+			printf("reached number of meals:  %i\n", philo->id_num);
+			return (NULL);
+		}
+			
 		sleep_routine(philo);
 		think_routine(philo);
 	}
 	return (NULL);
+}
+
+int	check_full(t_philostr *philostr)
+{
+	pthread_mutex_lock(&philostr->full_mutex);
+	if (philostr->full == philostr->philo_num)
+		return (1);
+	return (0);
 }
 
 void *supervising(void *data)
@@ -164,6 +181,15 @@ void *supervising(void *data)
 			{
 				return (NULL);
 			}
+			pthread_mutex_lock(&philostr->full_mutex);
+			if (check_full(philostr))
+			{
+				pthread_mutex_lock(&philostr->stop_mutex);
+				philostr->stop = 1;
+				pthread_mutex_unlock(&philostr->stop_mutex);
+				return (NULL);
+			}
+				
 			i++;
 		}
 	}
