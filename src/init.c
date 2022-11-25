@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/24 13:04:12 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/24 17:09:36 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	ft_philadd_back(t_onephil_l **lst, t_onephil_l *new)
 		*lst = new;
 		printf("first of list\n");
 	}
-		
 	else
 	{
 		ft_phillast(*lst)->next = new;
@@ -80,31 +79,23 @@ void	ft_philadd_back(t_onephil_l **lst, t_onephil_l *new)
 	}
 }
 
-t_onephil_l	*ft_philnew(t_philostr *philostr, int c)
+t_onephil_l	*ft_philnew(t_philostr **philostr, int c)
 {
-	t_onephil_l	*new_phil;
-	// char		*tmp;
+	t_onephil_l	*new_list;
 
-	new_phil = (t_onephil_l *)malloc(sizeof (t_onephil_l));
-	if (!new_phil)
+	new_list = malloc(sizeof (t_onephil_l	*));
+	if (!new_list)
 		return (NULL);
-	new_phil->fork_right = (t_fork *)malloc(sizeof(t_fork *));
-	if (!new_phil->fork_right)
-		return (NULL);
-	new_phil->id_num = c;
-	new_phil->philostr = philostr;
-	new_phil->last_meal_eaten = 0;
-	pthread_mutex_init(&new_phil->fork_right->fork_mutex, NULL);
-	new_phil->fork_right->in_use = 0;
+	new_list->philostr = philostr;
+	new_list->id_num = c;
+	new_list->last_meal_eaten = *philostr.time_start;
+	pthread_mutex_init(&new_list->last_meal_mutex, NULL);
+	new_list->fork_right = malloc(sizeof(t_fork));
+	new_list->fork_right->in_use = 0;
+	pthread_mutex_init(&new_list->fork_right->fork_mutex, NULL);
+	new_list->next = NULL;
 	
-	printf("new: new_phil->fork_right->in_use: %i\n", new_phil->fork_right->in_use);
-	printf("new: new_phil->id: %i\n", new_phil->id_num);
-	
-	pthread_mutex_init(&new_phil->last_meal_mutex, NULL);
-	new_phil->next = NULL;
-	printf("timo to die:%i\n",philostr->time_to_die );
-	printf("philo_num:%i\n",philostr->philo_num );
-	return (new_phil);
+	return (new_list);
 }
 
 void	print_main_str(t_philostr	*main_str)
@@ -119,13 +110,31 @@ void	print_main_str(t_philostr	*main_str)
 	printf("main_str->time_start: %li\n", main_str->time_start);
 }
 
+void	print_phil_str(t_onephil_l	*one_phil)
+{
+	printf("one_phil->main_str Philo_num: %i\n", one_phil->philostr->philo_num);
+	printf("one_phil->main_str->time_to_die: %i\n", one_phil->philostr->time_to_die);
+	printf("one_phil->main_str->time_to_eat: %i\n", one_phil->philostr->time_to_eat);
+	printf("one_phil->main_str->time_to_sleep: %i\n", one_phil->philostr->time_to_sleep);
+	printf("one_phil->main_str->c_eat: %i\n", one_phil->philostr->c_eat);
+	printf("one_phil->main_str->stop: %i\n", one_phil->philostr->stop);
+	printf("one_phil->main_str->dead: %i\n", one_phil->philostr->dead);
+	printf("one_phil->id_num: %i\n", one_phil->id_num);
+	printf("one_phil->last_meal_eaten: %li\n", one_phil->last_meal_eaten);
+	printf("one_phil->fork_right->in_use: %i\n", one_phil->fork_right->in_use);
+	// printf("main_str->time_start: %li\n", one_phil->philostr->time_start);
+	// printf("main_str->time_start: %li\n", one_phil->philostr->time_start);
+	// printf("main_str->time_start: %li\n", one_phil->philostr->time_start);
+}
+
 /**
  * @brief initialises the main structure
+ * includes starting time of simulation
  * 
  * @param argv 
  * @return t_philostr* 
  */
-t_philostr *init_main_str(char **argv)
+t_philostr **init_main_str(char **argv)
 {
 	t_philostr	*main_str;
 	
@@ -146,11 +155,8 @@ t_philostr *init_main_str(char **argv)
 	pthread_mutex_init(&main_str->dead_mutex, NULL);
 	pthread_mutex_init(&main_str->stop_mutex, NULL);
 	main_str->time_start = get_time_ms();
-	print_main_str(main_str);
-	return (main_str);
+	return (&main_str);
 }
-
-
 
 /**
  * @brief initialises a structure for each philosopher
@@ -161,14 +167,27 @@ t_philostr *init_main_str(char **argv)
  * @param argv 
  * @return t_onephil_l* 
  */
-// t_onephil_l *init_new(char **argv)
-// {
-// 	t_philostr	*main_str;
-// 	// t_onephil_l	*table;
+t_onephil_l *init_table(char **argv)
+{
+	t_philostr	**main_str;
+	t_onephil_l	*table;
+	t_onephil_l	*seats;
+	int			c;
 
-// 	main_str = init_main_str(argv);
-// 	return
-// }
+	main_str = init_main_str(argv);
+	c = 1;
+	table = NULL;
+	while (c <= main_str->philo_num)
+	{
+		seats = ft_philnew(main_str, c);
+		ft_philadd_back(&table, seats);
+		print_phil_str(seats);
+		c++;
+		
+	}
+	// print_phil_str(table);
+	return (table);
+}
 
 // t_onephil_l *init(char **argv)
 // {

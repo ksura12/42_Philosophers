@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/24 13:02:20 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/24 14:35:06 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	if (!checker(argc, argv))
 		return (0);
-	init_main_str(argv);
+	init_table(argv);
 	// table = init(argv);
 
 	
