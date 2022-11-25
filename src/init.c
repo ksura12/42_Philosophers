@@ -6,7 +6,7 @@
 /*   By: ksura@student.42wolfsburg.de <ksura@studen +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/24 19:47:44 by ksura@student.42 ###   ########.fr       */
+/*   Updated: 2022/11/24 19:57:08 by ksura@student.42 ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,77 +100,77 @@ t_philostr	*init_all(char **argv)
 	pthread_mutex_lock(&philostr->dead_mutex);
 	philostr->dead = 0;
 	pthread_mutex_unlock(&philostr->dead_mutex);
-	one_phil = ft_philnew()
+	one_phil = ft_philnew(philostr);
 
 }
 
-t_onephil_l *init(char **argv)
-{
-	t_philostr	*philostr;
-	int			c;
-	// int			c_next;
-	t_onephil_l	*one_phil;
-	t_onephil_l	*tmp;
-	//t_onephil	*supervis;
-	// t_fork		**fork;
+// t_onephil_l *init(char **argv)
+// {
+// 	t_philostr	*philostr;
+// 	int			c;
+// 	// int			c_next;
+// 	t_onephil_l	*one_phil;
+// 	t_onephil_l	*tmp;
+// 	//t_onephil	*supervis;
+// 	// t_fork		**fork;
 
-	// one_phil = malloc(sizeof(t_onephil *) * 601);
-	// if (one_phil == NULL)
-	// 	return (NULL);
-	one_phil = NULL;
-	philostr = malloc(sizeof(t_philostr));
-	if (philostr == NULL)
-		return (NULL);
-	philostr->time_start = get_time_ms();
-	philostr->philo_num = ft_atoi(argv[1]);
-	philostr->time_to_die = ft_atoi(argv[2]);
-	philostr->time_to_eat = ft_atoi(argv[3]);
-	philostr->time_to_sleep = ft_atoi(argv[4]);
-	if (argv[5])
-		philostr->c_eat = ft_atoi(argv[5]);
-	else
-		philostr->c_eat = -1;
-	pthread_mutex_init(&philostr->print_mutex, NULL);
-	pthread_mutex_init(&philostr->dead_mutex, NULL);
-	pthread_mutex_init(&philostr->stop_mutex, NULL);
-	pthread_mutex_lock(&philostr->stop_mutex);
-	philostr->stop = 0;
-	pthread_mutex_unlock(&philostr->stop_mutex);
-	pthread_mutex_lock(&philostr->dead_mutex);
-	philostr->dead = 0;
-	pthread_mutex_unlock(&philostr->dead_mutex);
-	c = philostr->philo_num;
-	while (c > 0)
-	{	
-		printf("philo_num: %i\n", c);
-		if (c == philostr->philo_num)
-			one_phil = ft_philnew(philostr, c);
-		else
-		{
-			tmp = ft_philnew(philostr, c);
-			ft_philadd_back(&one_phil, tmp);
-		}
-		c--;
-		// one_phil[c].fork_right = malloc(sizeof(t_fork *));
-		// pthread_mutex_init(&one_phil[c].fork_right->fork_mutex, NULL);
-		// one_phil[c].fork_right->in_use = 0;
-		// c--;
-	}
-	c = philostr->philo_num;
-	tmp = one_phil;
-	while (c > 0)
-	{
-		if (c == 0 && philostr->philo_num > 1)
-			tmp->next = one_phil;
-		if (tmp->next != NULL)
-		{
-			printf("philo_num before lock: %i\n", c);
-			pthread_mutex_lock(&tmp->next->fork_right->fork_mutex);
-			tmp->fork_left = tmp->next->fork_right;
-			pthread_mutex_unlock(&tmp->next->fork_right->fork_mutex);
-			tmp = tmp->next;
-		}
-		c--;
-	}
-	return (one_phil);
-}
+// 	// one_phil = malloc(sizeof(t_onephil *) * 601);
+// 	// if (one_phil == NULL)
+// 	// 	return (NULL);
+// 	one_phil = NULL;
+// 	philostr = malloc(sizeof(t_philostr));
+// 	if (philostr == NULL)
+// 		return (NULL);
+// 	philostr->time_start = get_time_ms();
+// 	philostr->philo_num = ft_atoi(argv[1]);
+// 	philostr->time_to_die = ft_atoi(argv[2]);
+// 	philostr->time_to_eat = ft_atoi(argv[3]);
+// 	philostr->time_to_sleep = ft_atoi(argv[4]);
+// 	if (argv[5])
+// 		philostr->c_eat = ft_atoi(argv[5]);
+// 	else
+// 		philostr->c_eat = -1;
+// 	pthread_mutex_init(&philostr->print_mutex, NULL);
+// 	pthread_mutex_init(&philostr->dead_mutex, NULL);
+// 	pthread_mutex_init(&philostr->stop_mutex, NULL);
+// 	pthread_mutex_lock(&philostr->stop_mutex);
+// 	philostr->stop = 0;
+// 	pthread_mutex_unlock(&philostr->stop_mutex);
+// 	pthread_mutex_lock(&philostr->dead_mutex);
+// 	philostr->dead = 0;
+// 	pthread_mutex_unlock(&philostr->dead_mutex);
+// 	c = philostr->philo_num;
+// 	while (c > 0)
+// 	{	
+// 		printf("philo_num: %i\n", c);
+// 		if (c == philostr->philo_num)
+// 			one_phil = ft_philnew(philostr, c);
+// 		else
+// 		{
+// 			tmp = ft_philnew(philostr, c);
+// 			ft_philadd_back(&one_phil, tmp);
+// 		}
+// 		c--;
+// 		// one_phil[c].fork_right = malloc(sizeof(t_fork *));
+// 		// pthread_mutex_init(&one_phil[c].fork_right->fork_mutex, NULL);
+// 		// one_phil[c].fork_right->in_use = 0;
+// 		// c--;
+// 	}
+// 	c = philostr->philo_num;
+// 	tmp = one_phil;
+// 	while (c > 0)
+// 	{
+// 		if (c == 0 && philostr->philo_num > 1)
+// 			tmp->next = one_phil;
+// 		if (tmp->next != NULL)
+// 		{
+// 			printf("philo_num before lock: %i\n", c);
+// 			pthread_mutex_lock(&tmp->next->fork_right->fork_mutex);
+// 			tmp->fork_left = tmp->next->fork_right;
+// 			pthread_mutex_unlock(&tmp->next->fork_right->fork_mutex);
+// 			tmp = tmp->next;
+// 		}
+// 		c--;
+// 	}
+// 	return (one_phil);
+// }
