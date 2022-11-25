@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/24 14:35:06 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 10:41:13 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,18 @@ int	checker(int argc, char **argv)
 	return(1);
 }
 
-void	printtable(t_onephil_l	*table);
+// void	printtable(t_onephil_l	*table);
 
 int	main(int argc, char **argv, char **envp)
 {
-	// t_onephil_l	*table;
+	t_philostr	*philostr;
+	
 	(void)envp;
 	if (!checker(argc, argv))
 		return (0);
-	init_table(argv);
+	philostr = init_all(argv);
+	print_main_str(philostr);
+	// init_table(argv);
 	// table = init(argv);
 
 	
