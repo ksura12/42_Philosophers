@@ -6,12 +6,11 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:32:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/24 17:08:36 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/25 09:56:25 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-	#define PHILOSOPHERS_H
+#define PHILOSOPHERS_H
 
 #include <stdio.h>
 #include <unistd.h>
@@ -40,9 +39,11 @@ typedef struct s_philostr
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	stop_mutex;
+	t_phils			**philos;
+	t_fork			**forks;
 } t_philostr;
 
-typedef struct s_onephil_l
+typedef struct s_philos
 {
 	t_philostr			**philostr;
 	int					id_num;
@@ -52,7 +53,8 @@ typedef struct s_onephil_l
 	t_fork				*fork_right;
 	pthread_t			tid;
 	struct s_onephil_l	*next;
-} t_onephil_l;
+} t_philos;
+
 
 //timing.c
 time_t		get_time_ms(void);
@@ -61,7 +63,7 @@ void		print_time_thread(t_onephil_l	*one_phil);
 
 //init.c
 t_onephil_l	*init(char **argv);
-t_onephil_l	*ft_philnew(t_philostr **philostr, int c);
+t_philos	**ft_philnew(t_philostr *philostr);
 void		ft_philadd_back(t_onephil_l **lst, t_onephil_l *new);
 t_onephil_l	*ft_phillast(t_onephil_l *lst);
 t_philostr	*init_main_str(char **argv);
