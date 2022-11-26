@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 11:30:09 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 12:42:40 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/26 21:52:38 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,27 @@ int	checker(int argc, char **argv)
 	return(1);
 }
 
-// void	printtable(t_onephil_l	*table);
+void	free_structs(t_philostr	*philostr)
+{
+	int i;
+
+	i = 0;
+	while (i < philostr->philo_num)
+	{
+	
+		pthread_mutex_destroy(&philostr->forks[i]->fork_mutex);
+		free(philostr->forks[i]);
+		pthread_mutex_destroy(&philostr->philos[i]->last_meal_mutex);
+		free(philostr->philos[i]);
+		i++;
+	}
+	free(philostr->forks);
+	free(philostr->philos);
+	pthread_mutex_destroy(&philostr->print_mutex);
+	pthread_mutex_destroy(&philostr->stop_mutex);
+	pthread_mutex_destroy(&philostr->full_mutex);
+	free(philostr);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -62,24 +82,7 @@ int	main(int argc, char **argv, char **envp)
 	philostr = init_all(argv);
 	// print_main_str(philostr);
 	table(philostr);
-	// table = init(argv);
-
-	
-	// printf("start time: ");
-	// print_time(table->philostr);
-	// printf("\n");
-	// printf("\n");
-	// print_time(philos_struc);
-	// supervisor(one_phil);
-	// printf("main: one_phil->next->fork_right->in_use: %i\n", one_phil->next->fork_right->in_use);
-	// philos(one_phil);
-	//Free forks
-	//while()
-	//	free(one_phil[0]->fork)
-	
-	//Freeing the only allocated philostr
-	// free (one_phil->philostr);
-	// free (one_phil);
+	free_structs(philostr);
 	
 	return (0);
 }
