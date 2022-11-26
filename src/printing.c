@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 13:08:14 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 15:16:18 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/26 22:18:58 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  */
 void	print_event(t_philostr *pstr, int phil_id, int event)
 {
-	if(stop_checker(pstr))
+	if (stop_checker(pstr))
 	{
 		pthread_mutex_lock(&pstr->print_mutex);
 		if ((event > 0) && (event < 6))

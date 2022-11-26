@@ -6,43 +6,22 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 19:29:06 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/26 22:04:19 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-int	ft_atoi(const char *str)
-{
-	long int	n;
-	int			m;
-
-	n = 0;
-	m = 1;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			m = -1;
-		str++;
-	}
-	while (*str >= 48 && *str <= 57)
-	{
-		n = n * 10 + *str - '0';
-		str++;
-		if (n > 2147483647 && m == 1)
-			return (-1);
-		else if (n > 2147483648 && m == -1)
-			return (0);
-	}
-	return (n * m);
-}
-
+/**
+ * @brief initialises the array of philosopher structs
+ * 
+ * @param philostr 
+ * @return t_philos** 
+ */
 t_philos	**ft_philnew(t_philostr *philostr)
 {
 	t_philos	**philos;
-	int 		i;
+	int			i;
 
 	philos = malloc(sizeof (t_philos) * philostr->philo_num);
 	if (!philos)
@@ -58,13 +37,19 @@ t_philos	**ft_philnew(t_philostr *philostr)
 		pthread_mutex_init(&philos[i]->last_meal_mutex, NULL);
 		i++;
 	}
-	return(philos);
+	return (philos);
 }
 
+/**
+ * @brief initialises all forks, one per philosopher
+ * 
+ * @param philostr 
+ * @return t_fork** double poiter to the fork array
+ */
 t_fork	**ft_forks(t_philostr *philostr)
 {
 	t_fork	**forks;
-	int 		i;
+	int		i;
 
 	forks = malloc(sizeof (t_fork *) * philostr->philo_num);
 	if (!forks)
@@ -82,26 +67,6 @@ t_fork	**ft_forks(t_philostr *philostr)
 	return (forks);
 }
 
-void	print_main_str(t_philostr	*main_str)
-{
-	int i = 0;
-	printf("main_str Philo_num: %i\n", main_str->philo_num);
-	printf("main_str->time_to_die: %i\n", main_str->time_to_die);
-	printf("main_str->time_to_eat: %i\n", main_str->time_to_eat);
-	printf("main_str->time_to_sleep: %i\n", main_str->time_to_sleep);
-	printf("main_str->c_eat: %i\n", main_str->c_eat);
-	printf("main_str->stop: %i\n", main_str->stop);
-	printf("main_str->full: %i\n", main_str->full);
-	printf("main_str->time_start: %li\n", main_str->time_start);
-	while (i < main_str->philo_num)
-	{
-		printf("philo id: %i\n", main_str->philos[i]->id_num);
-		printf("philo id: %i\n", main_str->philos[i]->philostr->philos[i]->id_num);
-		printf("fork in use: %i\n", main_str->forks[i]->in_use);
-		i++;
-	}
-}
-
 /**
  * @brief initialises the main structure
  * includes starting time of simulation
@@ -112,7 +77,7 @@ void	print_main_str(t_philostr	*main_str)
 t_philostr	*init_all(char **argv)
 {
 	t_philostr	*philostr;
-	
+
 	philostr = malloc(sizeof(t_philostr));
 	if (philostr == NULL)
 		return (NULL);
@@ -131,7 +96,7 @@ t_philostr	*init_all(char **argv)
 	philostr->full = 0;
 	philostr->forks = ft_forks(philostr);
 	philostr->philos = ft_philnew(philostr);
-	philostr->time_to_think = (philostr->time_to_die 
+	philostr->time_to_think = (philostr->time_to_die \
 	- philostr->time_to_sleep - philostr->time_to_eat) / 4;
 	return (philostr);
 }

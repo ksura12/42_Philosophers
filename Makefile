@@ -6,20 +6,20 @@
 #    By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 09:24:12 by ksura             #+#    #+#              #
-#    Updated: 2022/11/25 13:17:27 by ksura            ###   ########.fr        #
+#    Updated: 2022/11/26 22:24:04 by ksura            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := philosophers
-CC = gcc  -g -fsanitize=thread
-#
+CC = gcc  -g 
+#-fsanitize=thread
 CFLAGS := -Wall -Werror -Wextra
 HEADER = ./header
 SRCDIR = src/
 OBJDIR = build/
 
 
-SRC := main.c timing.c init.c philos.c printing.c
+SRC := main.c timing.c init.c philos.c printing.c utils.c supervisor.c
 
 GREEN = \033[0;32m
 RED = \033[0;31m
