@@ -6,16 +6,11 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/26 20:22:25 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/26 21:16:16 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-// void taking_fork(t_philostr	*philostr);
-// {
-
-// }
 
 int	stop_checker(t_philostr *philostr)
 {
@@ -31,64 +26,6 @@ int	stop_checker(t_philostr *philostr)
 		return (1);
 	}
 }
-
-// int	taking_fork_l(t_philos *philo, t_fork *fork_r, t_fork *fork_l)
-// {
-// 	pthread_mutex_lock(&fork_r->fork_mutex);
-// 	fork_r->in_use = 1;
-// 	pthread_mutex_unlock(&fork_r->fork_mutex);
-// 	pthread_mutex_lock(&fork_l->fork_mutex);
-// 	if (fork_l->in_use == 0)
-// 	{
-// 		pthread_mutex_lock(&fork_r->fork_mutex);
-// 		print_event(philo->philostr, philo->id_num, 1);
-// 		print_event(philo->philostr, philo->id_num, 2);
-// 		sleeping(philo->philostr, philo->philostr->time_to_eat);
-// 		// usleep(philo->philostr->time_to_eat * 1000);
-// 		fork_r->in_use = 0;
-// 		pthread_mutex_unlock(&fork_r->fork_mutex);
-// 		pthread_mutex_unlock(&fork_l->fork_mutex);
-// 		pthread_mutex_lock(&philo->last_meal_mutex);
-// 		philo->last_meal_eaten = get_time_ms();
-// 		pthread_mutex_unlock(&philo->last_meal_mutex);
-// 		return (0);
-// 	}
-// 	else
-// 	{
-// 		pthread_mutex_unlock(&fork_l->fork_mutex);
-// 		usleep(1 * 1000);
-// 		return (1);
-// 	}
-// }
-
-// void	eating(t_philos *philo)
-// {
-// 	t_fork		*fork_r;
-// 	t_fork		*fork_l;
-	
-// 	fork_r = philo->philostr->forks[philo->id_num];
-// 	if (philo->id_num == philo->philostr->philo_num)
-// 		fork_r = philo->philostr->forks[0];
-// 	fork_l = philo->philostr->forks[philo->id_num - 1];
-// 	while(stop_checker(philo->philostr))
-// 	{	
-// 			pthread_mutex_lock(&fork_r->fork_mutex);
-// 			if (fork_r->in_use == 0)
-// 			{
-// 				pthread_mutex_unlock(&fork_r->fork_mutex);
-// 				while(stop_checker(philo->philostr))
-// 				{
-// 					if (!taking_fork_l(philo, fork_r, fork_l))
-// 						return;
-// 				}
-// 			}
-// 			else
-// 			{
-// 				pthread_mutex_unlock(&fork_r->fork_mutex);
-// 				usleep(1 * 1000);
-// 			}
-// 	}
-// }
 
 void	eat_routine(t_philos *philo)
 {
@@ -197,18 +134,6 @@ void *supervising(void *data)
 	}
 	return (NULL);
 }
-
-// void	supervisor(t_onephil_l *philis)
-// {
-// 	t_onephil_l *super;
-	
-// 	super = philis;
-// 	printf("super->philostr->philo_num: %i\n",super->philostr->philo_num );
-// 	printf("id_num: %i\n",super->id_num );
-// 	printf("fork use: %i\n",super->fork_right->in_use );
-// 	printf("super->next: %i\n", (int)super->next );
-// 	pthread_create(&super->tid, NULL, &supervising, &super);
-// }
 
 void	table(t_philostr *philostr)
 {
