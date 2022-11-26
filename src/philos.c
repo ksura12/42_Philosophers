@@ -6,7 +6,7 @@
 /*   By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 12:38:52 by ksura             #+#    #+#             */
-/*   Updated: 2022/11/25 19:30:32 by ksura            ###   ########.fr       */
+/*   Updated: 2022/11/26 20:22:25 by ksura            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void	eat_routine(t_philos *philo)
 		philo->last_meal_eaten = get_time_ms();
 		pthread_mutex_unlock(&philo->last_meal_mutex);
 		philo->nb_meals += 1;
-		// if (philo->nb_meals == philo->philostr->c_eat)
 	}
 	
 }
@@ -137,6 +136,8 @@ void	*living(void *data)
 	t_philos	*philo;
 
 	philo = (t_philos *)data;
+	if (philo->philostr->philo_num == 1)
+		return (NULL);
 	if (philo->id_num % 2)
 		think_routine(philo);
 	while(stop_checker(philo->philostr))
@@ -147,7 +148,6 @@ void	*living(void *data)
 			pthread_mutex_lock(&philo->philostr->full_mutex);
 			philo->philostr->full += 1;
 			pthread_mutex_unlock(&philo->philostr->full_mutex);
-			printf("reached number of meals:  %i\n", philo->id_num);
 			return (NULL);
 		}
 			
@@ -161,7 +161,11 @@ int	check_full(t_philostr *philostr)
 {
 	pthread_mutex_lock(&philostr->full_mutex);
 	if (philostr->full == philostr->philo_num)
+	{
+		pthread_mutex_unlock(&philostr->full_mutex);
 		return (1);
+	}
+	pthread_mutex_unlock(&philostr->full_mutex);
 	return (0);
 }
 
@@ -172,24 +176,22 @@ void *supervising(void *data)
 	int			i;
 
 	philostr = (t_philostr *)data;
-	while (1)
+	while (stop_checker(philostr))
 	{
 		i = 0;
 		while (i < philostr->philo_num)
 		{
 			if (lifetime_counter(philostr->philos[i]) == 1)
 			{
-				return (NULL);
+				break;
 			}
-			pthread_mutex_lock(&philostr->full_mutex);
 			if (check_full(philostr))
 			{
 				pthread_mutex_lock(&philostr->stop_mutex);
 				philostr->stop = 1;
 				pthread_mutex_unlock(&philostr->stop_mutex);
-				return (NULL);
+				break;
 			}
-				
 			i++;
 		}
 	}
@@ -227,6 +229,7 @@ void	table(t_philostr *philostr)
 		c--;
 	}
 	pthread_join(philostr->super, NULL);
+	return;
 }
 
 int	lifetime_counter(t_philos	*one_phil)
