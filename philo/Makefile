@@ -6,11 +6,11 @@
 #    By: ksura <ksura@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/07 09:24:12 by ksura             #+#    #+#              #
-#    Updated: 2022/11/27 15:01:06 by ksura            ###   ########.fr        #
+#    Updated: 2022/11/27 15:25:17 by ksura            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := philosophers
+NAME := philo
 CC = gcc  -g -fsanitize=thread
 CFLAGS := -Wall -Werror -Wextra
 HEADER = ./header
